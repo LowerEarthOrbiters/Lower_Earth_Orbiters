@@ -177,8 +177,14 @@ router.post(
       // ||
       // !mongoose.isValidObjectId(commandId)
     ) {
-      return res.status(500).json({ error: "Invalid IDs" });
+      return res.status(500).json({ error: "Invalid User" });
     }
+
+    for (var commandId in commands){
+      if (!mongoose.isValidObjectId(commandId)){
+        return res.status(500).json({ error: "Invalid Command Id" });
+      }
+    } 
 
     const userRecord = await User.findById(userId);
 
