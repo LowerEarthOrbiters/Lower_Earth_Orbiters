@@ -166,6 +166,41 @@ router.patch(
   }
 );
 
+router.post(
+  "/createSchedule",
+  async (req: CreateScheduleProp, res: any) => {
+    const { commands, satelliteId, userId, executionTimestamp } = req.body;
+
+    // Validation
+    if (
+      !mongoose.isValidObjectId(userId) 
+      // ||
+      // !mongoose.isValidObjectId(commandId)
+    ) {
+      return res.status(500).json({ error: "Invalid IDs" });
+    }
+
+    const userRecord = await User.findById(userId);
+
+    if (!userRecord) {
+      return res.status(500).json({ error: "User does not exist" });
+    }
+
+    // Check if user has permission
+    if (userRecord.role !== UserRole.ADMIN) {
+      const commandRecord = await Command.findById(commandId);
+      if (commandRecord?.userId?.toString() !== userId) {
+        return res.status(500).json({ error: "Invalid Credentials" });
+      }
+    }
+
+    // Remove command record
+    const cmd = await Command.findByIdAndDelete(commandId).exec();
+
+    return res.json({ message: "Removed command from schedule" });
+  }
+);
+
 router.get("/getSchedulesBySatellite", async (req: any, res: any) => {
   const { satelliteId } = req.query;
 
