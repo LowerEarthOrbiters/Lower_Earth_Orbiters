@@ -4,6 +4,7 @@ const express = require("express");
 const Schedule = require("../models/schedule");
 const Log = require("../models/log");
 
+// import Schedule from "../models/schedule";
 import Satellite from "../models/satellite";
 import Command from "../models/command";
 import User from "../models/user";
@@ -169,14 +170,10 @@ router.patch(
 router.post(
   "/createSchedule",
   async (req: CreateScheduleProp, res: any) => {
-    const { commands, satelliteId, userId, executionTimestamp } = req.body;
+    const {satelliteId, userId, executionTimestamp } = req.body;
 
     // Validation
-    if (
-      !mongoose.isValidObjectId(userId) 
-      // ||
-      // !mongoose.isValidObjectId(commandId)
-    ) {
+    if (!mongoose.isValidObjectId(userId) ) {
       return res.status(500).json({ error: "Invalid User" });
     }
 
@@ -192,18 +189,18 @@ router.post(
       return res.status(500).json({ error: "User does not exist" });
     }
 
-    // Check if user has permission
-    if (userRecord.role !== UserRole.ADMIN) {
-      const commandRecord = await Command.findById(commandId);
-      if (commandRecord?.userId?.toString() !== userId) {
-        return res.status(500).json({ error: "Invalid Credentials" });
-      }
-    }
+    // Check if user has permission ------ TODO
+    // if (userRecord.role !== UserRole.ADMIN) {
+    //   const commandRecord = await Command.findById(commandId);
+    //   if (commandRecord?.userId?.toString() !== userId) {
+    //     return res.status(500).json({ error: "Invalid Permissions" });
+    //   }
+    // }
 
     // Remove command record
-    const cmd = await Command.findByIdAndDelete(commandId).exec();
+    
 
-    return res.json({ message: "Removed command from schedule" });
+    return res.json({ message: "Added a new schedule" });
   }
 );
 
