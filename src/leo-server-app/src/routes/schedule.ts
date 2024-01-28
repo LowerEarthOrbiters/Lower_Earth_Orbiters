@@ -167,6 +167,7 @@ router.patch(
   }
 );
 
+// TODO - Remove, might not need this
 router.post(
   "/createSchedule",
   async (req: CreateScheduleProp, res: any) => {
