@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("", (req: any, res: any) => {
-  const ipAddress = "192.168.2.247";
+  const ipAddress = process.env.MOCK_GS_IP;
   execAsync(`ping ${ipAddress}`)
     .then(({ stdout }) => {
       res.json({ output: stdout });
