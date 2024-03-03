@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  target: "serverless",
+  output: "standalone",
 };
 
 module.exports = nextConfig;
