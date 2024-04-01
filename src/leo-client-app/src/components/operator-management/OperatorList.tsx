@@ -10,11 +10,26 @@ import {
   TableHead,
   TableRow,
   Typography,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
 import EditUserRoleModal from "./EditUserRoleModal";
 
 const OperatorList: React.FC = () => {
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
+  const [open, setOpen] = useState(false);
   const operators = useGetAllOperators();
 
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
@@ -51,6 +66,9 @@ const OperatorList: React.FC = () => {
               <TableCell sx={{ color: "white !important" }} align="left">
                 Edit
               </TableCell>
+              <TableCell sx={{ color: "white !important" }} align="left">
+                Manage Commands
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,6 +96,41 @@ const OperatorList: React.FC = () => {
                       onClick={() => handleModalOpen(user)}>
                       Edit Role
                     </Button>
+                  </TableCell>
+                  <TableCell sx={{ color: "white !important" }} align="left">
+                    <Button
+                      variant="text"
+                      sx={{
+                        color: "var(--material-theme-white)",
+                        backgroundColor:
+                          "var(--material-theme-sys-dark-primary)",
+                        borderRadius: "10px",
+                      }}
+                      onClick={handleClickOpen}
+                      >
+                      View Commands
+                    </Button>
+                  <Dialog open={open} onClose={handleClose}>
+                      <DialogTitle>View Commands</DialogTitle>
+                        <DialogContent>
+                          
+                          <TextField
+                            margin="dense"
+                            id="Command"
+                            label="Command"
+                            type="number"
+                            fullWidth
+                            variant="standard"
+                            // value={noradId}
+                            
+                            required
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Cancel</Button>
+                          <Button type="submit">Add Command</Button>
+                        </DialogActions>
+                    </Dialog>
                   </TableCell>
                 </TableRow>
               ))}
