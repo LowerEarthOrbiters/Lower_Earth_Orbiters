@@ -18,13 +18,28 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import EditUserRoleModal from "./EditUserRoleModal";
-import { BACKEND_URL, sendCommandSchedule } from "@/constants/api";
+import {getValidCommands} from "@/constants/api";
+import axios from "axios";
+import { useRouter } from "next/router";
+
 
 
 const OperatorList: React.FC = () => {
 
-  const handleClickOpen = (satelliteId) => {
-    fetchValidCommands(satelliteId);
+
+  // const operatorCommands = getValidCommands(satelliteId, userId);
+  const router = useRouter();
+  let { satId } = router.query as {
+    satId: string;
+  };
+
+  const satelliteId = satId;
+  // const handleClickOpen = () => {
+  //   // fetchValidCommands(satelliteId);
+  //   setOpen(true);
+  // };
+  const handleClickOpen = (user:string) => {
+    fetchCommands(satelliteId, user);
     setOpen(true);
   };
   
@@ -36,7 +51,7 @@ const OperatorList: React.FC = () => {
   const operators = useGetAllOperators();
 
 
-  const [validCommands, setValidCommands] = useState([]);
+  // const [validCommands, setValidCommands] = useState([]);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [userToEdit, setUserToEdit] = useState<any>(null);
 
@@ -50,19 +65,27 @@ const OperatorList: React.FC = () => {
     setOpenEditModal(false);
   };
 
-
-
-  const fetchValidCommands = (satelliteId: string) => {
-      fetch(`${BACKEND_URL}/satellite/getSatellite?satelliteId=${satelliteId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setValidCommands(data.satellite.validCommands);
-        })
-        .catch((error) => {
-          console.error("Error fetching valid commands Admin:", error);
-        });
-
+  const [commands, setCommands] = useState([]);
+  const [loadingCommands, setLoadingCommands] = useState(false);
+  
+  const fetchCommands = async (satelliteId: string, user:string) => {
+    setLoadingCommands(true);
+    const fetchedCommands = await getValidCommands(satelliteId, user);
+    setCommands(fetchedCommands);
+    setLoadingCommands(false);
   };
+
+  // const fetchValidCommands = (satelliteId: string) => {
+  //     fetch(`${BACKEND_URL}/satellite/getSatellite?satelliteId=${satelliteId}`)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         setValidCommands(data.satellite.validCommands);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching valid commands Admin:", error);
+  //       });
+
+  // };
 
   return (
     <Stack sx={{ width: "100%" }} alignItems="center" spacing={3} py={5}>
@@ -118,13 +141,14 @@ const OperatorList: React.FC = () => {
                   </TableCell>
                   <TableCell sx={{ color: "white !important" }} align="left">
                   <Button
+                      key={index}
                       variant="text"
                       sx={{
                         color: 'var(--material-theme-white)',
                         backgroundColor: 'var(--material-theme-sys-dark-primary)',
                         borderRadius: '10px',
                       }}
-                      onClick={() => handleClickOpen(user.satelliteId)} 
+                      onClick={() => handleClickOpen(user)} 
                     >
                       View Commands
                     </Button>
@@ -133,13 +157,18 @@ const OperatorList: React.FC = () => {
                         <DialogContent>
 
                           <Typography variant = "h7"> Commands for this User:</Typography>
-                          {validCommands.length > 0 ? (
-                            validCommands.map((command, index) => (
-                              <Typography key={index}>{command}</Typography>
-                            ))
-                          ) : (
-                            <Typography>No commands found.</Typography>
-                          )}
+                          {loadingCommands ? (
+                            <Typography>Loading...</Typography>
+                            ) : (
+                              commands.length > 0 ? (
+                                commands.map((command, index) => (
+                                  <Typography key={index}>{command}</Typography>
+                                ))
+                              ) : (
+                                <Typography>No commands found.</Typography>
+                              )
+                            )}
+
                           <TextField
                             margin="dense"
                             id="Add Command"
@@ -158,9 +187,6 @@ const OperatorList: React.FC = () => {
                           <Button type="submit">Add Command</Button>
                         </DialogActions>
                     </Dialog>
-
-                    
-
                   </TableCell>
                 </TableRow>
               ))}
