@@ -18,13 +18,16 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import EditUserRoleModal from "./EditUserRoleModal";
+import { BACKEND_URL, sendCommandSchedule } from "@/constants/api";
+
 
 const OperatorList: React.FC = () => {
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (satelliteId) => {
+    fetchValidCommands(satelliteId);
     setOpen(true);
   };
-
+  
   const handleClose = () => {
     setOpen(false);
   };
@@ -32,6 +35,8 @@ const OperatorList: React.FC = () => {
   const [open, setOpen] = useState(false);
   const operators = useGetAllOperators();
 
+
+  const [validCommands, setValidCommands] = useState([]);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [userToEdit, setUserToEdit] = useState<any>(null);
 
@@ -43,6 +48,20 @@ const OperatorList: React.FC = () => {
   const handleModalClose = () => {
     setUserToEdit(null);
     setOpenEditModal(false);
+  };
+
+
+
+  const fetchValidCommands = (satelliteId: string) => {
+      fetch(`${BACKEND_URL}/satellite/getSatellite?satelliteId=${satelliteId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setValidCommands(data.satellite.validCommands);
+        })
+        .catch((error) => {
+          console.error("Error fetching valid commands Admin:", error);
+        });
+
   };
 
   return (
@@ -98,26 +117,33 @@ const OperatorList: React.FC = () => {
                     </Button>
                   </TableCell>
                   <TableCell sx={{ color: "white !important" }} align="left">
-                    <Button
+                  <Button
                       variant="text"
                       sx={{
-                        color: "var(--material-theme-white)",
-                        backgroundColor:
-                          "var(--material-theme-sys-dark-primary)",
-                        borderRadius: "10px",
+                        color: 'var(--material-theme-white)',
+                        backgroundColor: 'var(--material-theme-sys-dark-primary)',
+                        borderRadius: '10px',
                       }}
-                      onClick={handleClickOpen}
-                      >
+                      onClick={() => handleClickOpen(user.satelliteId)} 
+                    >
                       View Commands
                     </Button>
-                  <Dialog open={open} onClose={handleClose}>
+                    <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>View Commands</DialogTitle>
                         <DialogContent>
-                          
+
+                          <Typography variant = "h7"> Commands for this User:</Typography>
+                          {validCommands.length > 0 ? (
+                            validCommands.map((command, index) => (
+                              <Typography key={index}>{command}</Typography>
+                            ))
+                          ) : (
+                            <Typography>No commands found.</Typography>
+                          )}
                           <TextField
                             margin="dense"
-                            id="Command"
-                            label="Command"
+                            id="Add Command"
+                            label="Add Command"
                             type="number"
                             fullWidth
                             variant="standard"
@@ -126,11 +152,15 @@ const OperatorList: React.FC = () => {
                             required
                           />
                         </DialogContent>
+
                         <DialogActions>
                           <Button onClick={handleClose}>Cancel</Button>
                           <Button type="submit">Add Command</Button>
                         </DialogActions>
                     </Dialog>
+
+                    
+
                   </TableCell>
                 </TableRow>
               ))}
