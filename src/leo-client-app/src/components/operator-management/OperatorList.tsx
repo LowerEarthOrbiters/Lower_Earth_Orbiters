@@ -26,44 +26,18 @@ import { useRouter } from "next/router";
 
 const OperatorList: React.FC = () => {
 
-
-  // const operatorCommands = getValidCommands(satelliteId, userId);
   const router = useRouter();
   let { satId } = router.query as {
     satId: string;
   };
 
   const satelliteId = satId;
-  // const handleClickOpen = () => {
-  //   // fetchValidCommands(satelliteId);
-  //   setOpen(true);
-  // };
-  const handleClickOpen = (user:string) => {
-    fetchCommands(satelliteId, user);
-    setOpen(true);
-  };
-  
-  const handleClose = () => {
-    setOpen(false);
-  };
-  
+
   const [open, setOpen] = useState(false);
   const operators = useGetAllOperators();
 
-
-  // const [validCommands, setValidCommands] = useState([]);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const [userToEdit, setUserToEdit] = useState<any>(null);
-
-  const handleModalOpen = (userData: any) => {
-    setUserToEdit(userData);
-    setOpenEditModal(true);
-  };
-
-  const handleModalClose = () => {
-    setUserToEdit(null);
-    setOpenEditModal(false);
-  };
 
   const [commands, setCommands] = useState([]);
   const [loadingCommands, setLoadingCommands] = useState(false);
@@ -75,17 +49,26 @@ const OperatorList: React.FC = () => {
     setLoadingCommands(false);
   };
 
-  // const fetchValidCommands = (satelliteId: string) => {
-  //     fetch(`${BACKEND_URL}/satellite/getSatellite?satelliteId=${satelliteId}`)
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setValidCommands(data.satellite.validCommands);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching valid commands Admin:", error);
-  //       });
+  const handleClickOpen = (user:string) => {
+    fetchCommands(satelliteId, user);
+    setOpen(true);
+  };
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  // };
+  const handleModalOpen = (userData: any) => {
+    setUserToEdit(userData);
+    setOpenEditModal(true);
+  };
+
+  const handleModalClose = () => {
+    setUserToEdit(null);
+    setOpenEditModal(false);
+  };
+
+
 
   return (
     <Stack sx={{ width: "100%" }} alignItems="center" spacing={3} py={5}>
@@ -155,7 +138,6 @@ const OperatorList: React.FC = () => {
                     <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>View Commands</DialogTitle>
                         <DialogContent>
-
                           <Typography variant = "h7"> Commands for this User:</Typography>
                           {loadingCommands ? (
                             <Typography>Loading...</Typography>
@@ -168,7 +150,6 @@ const OperatorList: React.FC = () => {
                                 <Typography>No commands found.</Typography>
                               )
                             )}
-
                           <TextField
                             margin="dense"
                             id="Add Command"
@@ -176,12 +157,9 @@ const OperatorList: React.FC = () => {
                             type="number"
                             fullWidth
                             variant="standard"
-                            // value={noradId}
-                            
                             required
                           />
                         </DialogContent>
-
                         <DialogActions>
                           <Button onClick={handleClose}>Cancel</Button>
                           <Button type="submit">Add Command</Button>
