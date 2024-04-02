@@ -68,8 +68,6 @@ const OperatorList: React.FC = () => {
     setOpenEditModal(false);
   };
 
-
-
   return (
     <Stack sx={{ width: "100%" }} alignItems="center" spacing={3} py={5}>
       <Typography variant="h5">Users</Typography>
