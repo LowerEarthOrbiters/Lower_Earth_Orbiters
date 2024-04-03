@@ -33,7 +33,10 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-March 6, 2024 & 1.0 & Upload VnVReport\\
+March 6, 2024 & 1.0 & Upload VnVReport - U.R.\\
+April 2, 2024 & 2.0 & Update VnVReport with feedback - U.R.\\
+April 3, 2024 & 2.1 & Label tables and better organize information - U.R.\\
+April 3, 2024 & 2.2 & Updated traceability matrices - U.R.\\
 \bottomrule
 \end{tabularx}
 
@@ -50,10 +53,12 @@ March 6, 2024 & 1.0 & Upload VnVReport\\
   DB & Database\\
   Schedule & Model type for MongoDB Schedule Collection \\
   Command & Model type for MongoDB Command Collection \\
+  VM & Virtual Machine \\
+  NEUDOSE & NEUtron DOSimetry Exploration \\
+  UI/UX & User Interface/User Experience \\
+  JSON & JavaScript Object Notation \\
   \bottomrule
 \end{tabular}\\
-
-\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
 
 \newpage
 
@@ -67,117 +72,197 @@ March 6, 2024 & 1.0 & Upload VnVReport\\
 
 \pagenumbering{arabic}
 
-This document ...
-
 \section{Functional Requirements Evaluation}
 
-FR-3 (The MCT will present a graphical interface allowing users to enter, select, and execute satellite commands while receiving text output from each command)
-\begin{itemize}
-    \item The ability to enter satellite commands in the backend database has been tested with jest.
-    \item The ability to execute satellite commands for a schedule in the backend has been tested with jest.
-    \item The ability to enter satellite commands through the frontend has been tested manually.
-\end{itemize}
+\subsection{MCT Application Accessibility}
 
-FR-4 (The MCT will log all commands sent to and received from each target
-with timestamps.)
-\begin{itemize}
-    \item The logging of data in the backend database have been tested through unit testing by emulating the execution of satellite commands.
-\end{itemize}
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{MCT Application Accessibility Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN1 & MCT application is a site hosted on Netlify which was accessed manually using Safari, Chrome and Firefox & Pass \\
+\hline
+FR-SLN2 & Manually established a connection on a TCP port and sent linux-commands through this port & Pass \\
+\hline
 
-FR-5 (he MCT must present a graphical user interface to create, edit, and
-delete automated command sequences)
-\begin{itemize}
-    \item The addition, modification, and deletion of command sequences have been tested manually through the frontend.
-\end{itemize}
+\end{longtable}
+\end{center}
 
-FR-6 (The MCT must have an option to cancel an automated command se-
-quence during execution.)
-\begin{itemize}
-    \item Testing has not yet been implemented.
-\end{itemize}
+\subsection{Managing User Roles}
 
-FR-11 (The MCT will be able to reject a user from executing a command
-unless that command matches the permission list criteria for the com-
-mand target.)
-\begin{itemize}
-    \item Unit tests have been implemented to schedule commands for users with both sufficient and insufficient permissions.
-\end{itemize}
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Managing User Roles Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN3 & Manually created a new user through the MCT's frontend facing application & Pass \\
+\hline
+FR-SLN4 & Manually edited and removed a user through the MCT's frontend facing application & Pass \\
+\hline
 
-FR-12 (The MCT must be able to schedule commands and automated com-
-mand sequences for future execution.)
-\begin{itemize}
-    \item Unit tests have been implemented to schedule commands for an overpass date in the future.
-    \item The scheduling of commands have been tested manually through the frontend.
-\end{itemize}
+\end{longtable}
+\end{center}
 
-FR-13 (The MCT shall present a graphical user interface to create, edit, and delete scheduled commands and sequences.)
-\begin{itemize}    
-    \item The addition, modification, and deletion of commands to a schedule have been tested manually through the frontend.
-\end{itemize}
+\subsection{Scheduling and Executing Commands}
 
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Scheduling and Executing Commands Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN5 & The addition, modification, and deletion of command sequences have been tested manually through the frontend. & Pass \\
+\hline
+FR-SLN6 & Manually executed a scheduled command sequence and viewed output through the frontend. & Pass \\
+\hline
 
+\end{longtable}
+\end{center}
 
-FR-14 (The MCT shall present a graphical user interface to select and edit the
-satellites of interest)
-\begin{itemize}
-    \item Setting TLE data for users to choose have been tested with valid, invalid, and empty TLEs, to ensure the correct output is received.
-\end{itemize}
-FR-15 (The MCT shall display the current orbital state for satellites of interest,
-elevation, and solar illumination.)
+\subsection{Cancelling Commands}
 
-\begin{itemize}
-    \item New changes to FR-SLN14 have been made to test the fetching of the data from external libraries (instead of testing for correctness). These tests includes fetching the data based on the state of the TLE passed in, Valid TLE, Invalid TLE, Valid Start Date, Invalid State Date, and a combination of both.
-    \item For testing solar illumination of the satellite, testing includes fetching the data based off the validity of the date, and if the input units are valid (for the external library holder)
-    \item For polar plot data, testing includes fetching the data based off the validity of the start and end date.
-    \item Lastly, the return type of the backend api call is tested to ensure the data is returned in the proper format, with correct typing.
-\end{itemize}
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Cancelling Commands Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN7 & The cancellation of command sequences have been tested manually through the frontend. & Pass \\
+\hline
 
-FR-16 (The MCT shall be able to schedule commands when a satellite enters a
-user-specified elevation threshold over the ground station coordinates.)
-\begin{itemize}
-    \item Removed as per stakeholder requests .
-\end{itemize}
+\end{longtable}
+\end{center}
 
-FR-17 (The MCT shall be able to schedule commands when a satellite enters
-or exits in the covered area.)
-\begin{itemize}    
-    \item Unit tests have been implemented to ensure scheduled commands are only executed on the date and time range specified for an overpass date.
-\end{itemize}
+\subsection{Validating Scheduled Commands}
+
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Validating Scheduled Commands Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN8 & Manually tested through the frontend. & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
+
+\subsection{Permission List Criteria for User}
+
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Permission List Criteria for User Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN9 & Manually tested execution of invalid command sequence through the frontend. & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
+
+\subsection{Permission List Criteria for Command Target}
+
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Permission List Criteria for Command Target Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN11 & Manually tested execution of invalid command sequence through the frontend. & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
+
+\subsection{Managing Scheduled Command Sequences}
+
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Managing Scheduled Command Sequences Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN12 & Manually tested managing (adding, deleting, editing) list of command sequences. & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
+
+\subsection{Selecting and Editing Satellites}
+
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Selecting and Editing Satellites Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN13 & Manually tested managing (adding, removing) satellites of interest through the frontend. & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
+
+\subsection{Viewing Configured Satellites}
+
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Viewing Configured Satellites Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN14 & Manually tested through the frontend. & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
+
+New changes to FR-SLN14 have been made to test the fetching of the
+data from external libraries (instead of testing for correctness). These
+tests includes fetching the data based on the state of the TLE passed
+in, Valid TLE, Invalid TLE, Valid Start Date, Invalid State Date, and
+a combination of both.
+
+\subsection{Detecting Satellite and Scheduling Command}
+
+\begin{center}
+\begin{longtable}{|p{2cm} | p{8cm} |p{2cm}| }
+\caption{Detecting Satellite and Scheduling Command Tests}
+\hline
+\textbf{Test Id} & \textbf{Notes} & \textbf{Result} \\
+\hline
+FR-SLN16 & Unit tests hav been written to only executed on the date and time range specified for an overpass date. & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
 
 \section{Nonfunctional Requirements Evaluation}
 
 \subsection{Usability}
 
-usability-1 - NFR 10.1
-\begin{itemize}
-    \item The feedback we gained for this test was combined with the second usability test which helps in testing NFR 10.3.
-\end{itemize}
+\begin{center}
+\begin{longtable}{|p{4cm} | p{4cm}| }
+\caption{Nonfunctional Requirements Evaluation Tests}
+\hline
+\textbf{Test Id} & \textbf{Result} \\
+\hline
+usability-1 & Pass \\
+\hline
+usability-2 & Pass \\
+\hline
 
-usability-2 - NFR 10.3
-\begin{itemize}
-    \item The initial testing involved users with no prior experience with the application, focusing on their ability to learn and navigate the system independently. The feedback highlights both strengths and areas for enhancement in the application's design and functionality.
-    \item Strengths Noted:
-    \begin{itemize}
-        \item The satellite and overpass functionality received positive remarks for its quick response when navigating to specific longitudes and latitudes, indicating efficient performance in these areas.
-        \item The command deletion process within the application was described as "pretty solid," suggesting it is user-friendly and reliable.
-    \end{itemize}
-    \item Areas for Improvement:
-    \begin{itemize}
-        \item Visibility and Clarity: There was confusion about the "valid commands box," suggesting a need for increased visibility and clearer indications of its purpose. It's essential to make it more obvious to users what the valid commands are.
-        \item Logs Page Functionality: Questions were raised about the purpose of the logs page, with suggestions to include filters for better usability, indicating a need for clearer presentation and functionality.
-        \item User Interface (UI) Considerations:
-        \begin{itemize}
-            \item The all-white interface led to suggestions for a light mode/dark mode feature, catering to different user preferences.
-            \item The addition of a feature to easily add satellites to the database directly from the first page was recommended.
-            \item Faster loading times for satellite changes were requested to enhance user experience.
-            \item Improvements in readability and presentation of information for upcoming satellite passes, possibly through a tabular format, were suggested to make the data more accessible.
-            \item A reevaluation of navigation within the schedule queue, seeking alternatives to horizontal scrolling, was advised.
-            \item The introduction of a filter for satellite passes, enabling searches by date or specific passes, was recommended to improve usability.
-            \item A call for a design that avoids the need for page scrolling, aiming to present all relevant information simultaneously.
-            \item The presentation of information in blocks or separated formats was suggested to improve visual hierarchy and readability, particularly for satellite information.
-        \end{itemize}
-    \end{itemize}
-\end{itemize}
+\end{longtable}
+\end{center}
+The tests above were conducted in two separate usability testing demonstrations, involving members from NEUDOSE's MIST team. All users involved in testing had no prior experience with the application, which focuses on their ability to learn and navigate the system independently. Both usability-1 and usability-2 had surveys to collect feedback for enhancement in the application’s design and functionality.
+\\ \\
+The feedback that we received from usability-1 the second
+usability test, usability-2, which helped assess the application's usability.
+\\ \\ 
+Overall, users found the application intuitive to use while pointing out some areas for improvement. The data for this survey is attached below in Section ADD. In our first usability demonstration, we received a score of 3/5. Then after re-iterating our frontend design, we received a usability score of 5/5 from our stakeholders. This score measures how intuitive and easy it was for new users to identify core functionalities in the web application. Additionally, from usability-2 we found that it takes users on average less than five minutes to identify and explore the core use cases of the application.
 
 usability-3 - NFR 10.5
 \begin{itemize}
@@ -186,118 +271,159 @@ usability-3 - NFR 10.5
 \end{itemize}
 \subsection{Performance}
 
-performance-3 - NFR 11.3
-\begin{itemize}
-\item Precision calculation will be tested by external library providers as the calculations are no longer in the scope of the application.
-\end{itemize}
+\begin{center}
+\begin{longtable}{|p{4cm} | p{4cm}| }
+\caption{Performance Tests}
+\hline
+\textbf{Test Id} & \textbf{Result} \\
+\hline
+performance-2 & Pass \\
+\hline
+performance-4 & Pass \\
+\hline
 
-performance-4 - NFR 11.4
-\begin{itemize}
-\item Scenarios which cause internal exceptions have been identified and implemented in automatic test cases, and is handled appropriately, be it error messages or additional error handling functionality.
-\end{itemize}
+\end{longtable}
+\end{center}
 
-\subsection{Environmental}
-
-environmental-1 - NFR 12.2.1
-
-\begin{itemize}
-    \item The application is setup to be hosted on Netlify's free service at the current moment. This applies that the features are also limited and that there cannot be a lot of traffic sent which makes testing the load much challenging. However, JMeter was used to verify the capabilities and challenged the application with 20 virtual users for 20 mintutes. Here are the results:
-\end{itemize}
+For performance-2, we have deployed our application using external cloud providers. We use Netlify to host our frontend facing application and a DigitalOcean virtual machine to host our backend and server-side logic. In addition, we rely on the monitoring tools offered by these external providers to check the system's availablity and usage at regular intervals. The figures provided below illustrate the application's bandwidth, and CPU usage in the last hour. This time frame can also be specified for a longer duration. From the images below, our application is not very resource intensive where CPU usage is less than 1\%. The continuous monitoring tools configured on both DigitalOcean and Netlify provides notifications on the application's uptime and downtime. Since the deployment of the application, the system's overall uptime has been 100\% excluding scheduled maintenance periods. This is consistent with the availability that these cloud poviders offer, where both DigitalOcean and Netlify guarantees an uptime of 99.99\% for deployments.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\textwidth]{new-chart-1-e13fd45c-e039-48c1-bb7f-3b555841f526.png}
-\caption{A simple caption for the image.}
+\includegraphics[width=1\textwidth]{performance-metrics.png}
+\caption{Application usage in last hour}
 \label{fig:myimage}
 \end{figure}
 
 \newpage
 
-environmental-2 - NFR 12.2.2
-\begin{itemize}
-    \item To achieve this, we leveraged Netlify's powerful development platform. Netlify facilitated the creation of a self-contained and fully functional development environment, streamlining the workflow and significantly enhancing productivity. The developers were able to set up their local environments effortlessly, following the instructions provided, and could launch the development setup with confidence, knowing it would initialize and run without errors.
-\end{itemize}
+For performance-4, scenarios which cause internal exceptions have been identified and implemented in automatic test cases. These automated tests have been implemented using Jest.js. Several of these tests involve handling edge cases which aim to catch internal exceptions. The figure below showcases the results from running all 88 unit tests pertaining to the functionality of the Satellite, Schedule, Command, and User modules.
 
-environmental-3 - 12.5
-\begin{itemize}
-    \item We are using GitHub issues to keep track of the dates and time for the project. Issues are created for the tasks that are remaining to be performed along with attaching the development branch that focuses on it. This way, we are able to ensure that the functional, non-functional and outside requirements are being fullfilled on-time.
-\end{itemize}
+
+\begin{figure}[h]
+
+\graphicspath{./jestResults/}
+\includegraphics[width=15cm, height=10cm]{jestResults.png}
+\caption{Jest.js Unit Test Results}
+\end{figure}
+
+\newpage
+
+
+\subsection{Environmental}
+
+\begin{center}
+\begin{longtable}{|p{4cm} | p{4cm}| }
+\caption{Environmental Tests}
+\hline
+\textbf{Test Id} & \textbf{Result} \\
+\hline
+environment-1 & Pass \\
+\hline
+environment-2 & Pass \\
+\hline
+environment-3 & Pass \\
+\hline
+
+\end{longtable}
+\end{center}
+
+For environmental-1, the application is setup to be hosted on Netlify's free service at the current moment. This applies that the features are also limited and that there cannot be a lot of traffic sent which makes testing the load much challenging. However, JMeter was used to verify the capabilities and challenged the application with 20 virtual users for 20 mintutes. Here are the results:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{new-chart-1-e13fd45c-e039-48c1-bb7f-3b555841f526.png}
+\caption{Stress test - JMeter 20 Mock Users}
+\label{fig:myimage}
+\end{figure}
+
+\newpage
+
+For environmental-2, we leveraged Netlify's powerful development platform. Netlify facilitated the creation of a self-contained and fully functional development environment, streamlining the workflow and significantly enhancing productivity. The developers were able to set up their local environments effortlessly, following the instructions provided, and could launch the development setup with confidence, knowing it would initialize and run without errors.
+\\ \\
+For environmental-3, we are using GitHub issues to keep track of the dates and time for the project. Issues are created for the tasks that are remaining to be performed along with attaching the development branch that focuses on it. This way, we are able to ensure that the functional, non-functional and outside requirements are being fulfilled on-time.
+
+
 \subsection{Maintenance}
 
+\begin{center}
+\begin{longtable}{|p{4cm} | p{4cm}| }
+\caption{Maintenance tests}
+\hline
+\textbf{Test Id} & \textbf{Result} \\
+\hline
+maintenance-1 & Pass \\
+\hline
+maintenance-2 & Pass \\
+\hline
+maintenance-3 & Pass \\
+\hline
+maintenance-4 & Pass \\
+\hline
+maintenance-5 & Pass \\
+\hline
 
+\end{longtable}
+\end{center}
 
-maintenance-2 - NFR 13.1.2
-\begin{itemize}
-\item GitHub Actions is correctly configured for the project, triggering automated build and test checks. The test checks are triggered every commit, and every PR, seamlessly integrated in the Github repository.
-\end{itemize}
+\\
+For maintenance-1, this system test was manually tested through the frontend. Upon executing a command, logs of a command are stored in MongoDB as JSON objects instead of plain or text files.
+\\ \\
+For maintenance-2, GitHub Actions is correctly configured for the project, triggering automated build and test checks. The test checks are triggered every commit, and every PR, seamlessly integrated in the Github repository.
+\\ \\
+For maintenance-3, the system identifies an outdated version automatically by utilizing node’s npm install command before the server is ran, and applies any changes (upgrades and downgrades). In addition, deliberate code formatting issues were introduced, and automatically corrected by esLint, the chosen code linter.
+\\ \\
+For maintenance-4, the project directory structure is intuitive, code is divided into client and server folders (front-end and back-end), with components, styles, and pages being divided for logical ordering. Variable, function, and template names follow consistent naming schemes, and are grouped where needed. Lastly, rigorous code reviews are performed to maintain the quality of the repository.
+\\ \\
+For maintenance-5, A code formatting tool, ESLint is integrated in the development environment through Visual Studio Code, and is enforced in code review. Since it is automatically integrated, random code files which are inspected match indentation, variable naming, and code structure.
 
-maintenance-3 - NFR 13.1.3
-\begin{itemize}
-\item The system identifies an outdated version automatically by utilizing node’s npm install command before the server is ran, and applies any changes (upgrades and downgrades). In addition, deliberate code formatting issues were introduced, and automatically corrected by esLint, the chosen code linter.
-\end{itemize}
-
-maintenance-4 - NFR 13.1.4
-\begin{itemize}
-\item The project directory structure is intuitive, code is divided into client and server folders (front-end and back-end), with components, styles, and pages being divided for logical ordering. Variable, function, and template names follow consistent naming schemes, and are grouped where needed. Lastly, rigorous code reviews are performed to maintain the quality of the repository.
-\end{itemize}
-
-maintenance-5 - NFR 13.1.5
-\begin{itemize}
-\item A code formatting tool, ESLint is integrated in the development environment through Visual Studio Code, and is enforced in code review. Since it is automatically integrated, random code files which are inspected match indentation, variable naming, and code structure.
-\end{itemize}
 
 \subsection{Integrity}
 
-integrity-1 - NFR 14.2.1
-\begin{itemize}
-\item Testing the Overpass Calculation will be tested by external library providers as the calculations are no longer in the scope of the application.
-\end{itemize}
+\begin{center}
+\begin{longtable}{|p{4cm} | p{4cm}| }
+\caption{Integrity Tests}
+\hline
+\textbf{Test Id} & \textbf{Result} \\
+\hline
+integrity-5 & Pass \\
+\hline
+integrity-6 & Pass \\
+\hline
+integrity-7 & Pass \\
+\hline
 
-integrity-2 - NFR 14.2.2
-\begin{itemize}
-\item Testing the Minimum Elevation will be tested by external library providers as the calculations are no longer in the scope of the application.
-\end{itemize}
+\end{longtable}
+\end{center}
 
-integrity-5 - NFR 14.2.5
-\begin{itemize}
-\item Various simulated satellite failures have been implemented in test cases to test and monitor error messages which are consistent amongst other messages, and communicate the nature of missing data attributes.
-\end{itemize}
-
-integrity-6 - NFR 14.2.6
-\begin{itemize}
-\item The application performs essential functionalities on all browsers (Safari, Chrome, Firefox).
-\end{itemize}
-
-integrity-7 - NFR 14.2.7
-\begin{itemize}
-\item The typescript compiler verifies HTML and CSS validity, and has not identified any compatibility issues across devices. In addition, esLint is applied to apply HTML and CSS coding standards when it comes to formatting. The application user interface remains consistent and functional across different devices and browsers.
-\end{itemize}
+For integrity-5, various simulated satellite failures have been implemented in test cases to test and monitor error messages which are consistent amongst other messages, and communicate the nature of missing data attributes.
+\\ \\
+For integrity-6, the application performs essential functionalities on all browsers (Safari, Chrome, Firefox).
+\\ \\
+For integrity-7, the typescript compiler verifies HTML and CSS validity, and has not identified any compatibility issues across devices. In addition, esLint is applied to apply HTML and CSS coding standards when it comes to formatting. The application user interface remains consistent and functional across different devices and browsers.
 		
 \subsection{Privacy and Accessibility}
 
-access-1 - NFT 14.1.1
-\begin{itemize}
-    \item The application integrates with an external authentication service (Auth0) to manage user authentication and account management. New and existing users will be registered and logged in using this service The test cases for this requirement are AM2 and AM3 and it can be found below in section 8 of Regression Testing.
-\end{itemize}
+\begin{center}
+\begin{longtable}{|p{4cm} | p{4cm}| }
+\caption{Privacy and Accessibility Tests}
+\hline
+\textbf{Test Id} & \textbf{Result} \\
+\hline
+access-1 & Pass \\
+\hline
+access-2 & Pass \\
+\hline
+privacy-1 & Pass \\
+\hline
 
-access-2 - NFR 14.1.2
-\begin{itemize}
-\item The application integrates with an external authentication service (Auth0) to manage user authentication and account management. This service allows an administrator to configure a rate limit of 10 login attempts per minute. As a result, the application enforces a 1 minute timeout period before the user can attempt to authenticate again. The test case for requirement is AM1 and it can be found below in section 8 of Regression Testing.
+\end{longtable}
+\end{center}
 
-\end{itemize}
-
-privacy-1 - NFR 14.3.1
-\begin{itemize}
-\item The test case for this requirement has not been implemented yet. Refer to test case REG-SAT1 in section 8 of Regression Testing.
-
-\end{itemize}
-
-
-\subsection{etc.}
-	
-\section{Comparison to Existing Implementation}	
-
-This section will not be appropriate for every project.
+For access-1, the application integrates with an external authentication service (Auth0) to manage user authentication and account management. New and existing users will be registered and logged in using this service The test cases for this requirement are AM2 and AM3 and it can be found below in section 8 of Regression Testing.
+\\ \\
+For access-2, the application integrates with an external authentication service (Auth0) to manage user authentication and account management. This service allows an administrator to configure a rate limit of 10 login attempts per minute. As a result, the application enforces a 1 minute timeout period before the user can attempt to authenticate again. The test case for requirement is AM1 and it can be found below in section 8 of Regression Testing.
+\\ \\
+For privacy-1, the test case for this requirement has not been implemented yet. Refer to test case REG-SAT1 in section 8 of Regression Testing.
 
 \section{Unit Testing}
 
@@ -309,7 +435,9 @@ POST /schedule/createScheduledCommand
 
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for  \newline 
+POST /schedule/createScheduledCommand}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -337,14 +465,15 @@ Error: "Invalid command sequence or user permissions" }
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 PATCH /schedule/updateScheduledCommand
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline PATCH /schedule/updateScheduledCommand}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -372,14 +501,15 @@ Error: "Invalid command sequence or user permissions" }
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 GET /schedule/getSchedulesBySatellite
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline GET /schedule/getSchedulesBySatellite}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -395,7 +525,7 @@ schedules: Schedule[] } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
@@ -403,7 +533,8 @@ GET /schedule/getCommandsBySchedule
 
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline GET /schedule/getCommandsBySchedule}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -413,14 +544,15 @@ commands: Command[] } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 DELETE /schedule/deleteScheduledCommand
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline DELETE /schedule/deleteScheduledCommand}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -435,28 +567,30 @@ Error: “Insufficient permissions” } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 GET /satellite/getSatelliteInfo
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline GET /satellite/getSatelliteInfo}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
 SM10 & FR-15 & {  } & { status: 200 } & { status: 200 } & Pass
 \\
 \hline
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 GET /getPolarPlotData
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline GET /getPolarPlotData}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -469,13 +603,14 @@ SM12 & FR-15 & { startTime = 2024-01- 06T 10:15:00Z;
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 GET /maxElevation
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline GET /maxElevation}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -488,13 +623,14 @@ SM14 & FR-16 & { startTime = 2024-01- 06T 10:15:00Z;
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 GET /getNextPasses
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline GET /getNextPasses}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -505,13 +641,14 @@ SM16 & FR-15 & { TLE = ""} & { status: 500 } & { status: 500 } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 GET /getSolarIllumination
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline GET /getSolarIllumination}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -522,13 +659,15 @@ SM17 & FR-15 & { TLE = ""} & { status: 500 } & { status: 500 } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
+
 POST /changeTLE
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline POST /changeTLE}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -539,7 +678,7 @@ SM19 & FR-14 & { TLE = ""} & { status: 500 } & { status: 500 } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
@@ -551,7 +690,8 @@ POST /satelliteUser/createSatelliteUser
 
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\begin{longtable}{|p{1cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\caption{Unit Tests for \newline POST /satelliteUser/createSatelliteUser}
 \hline
 \textbf{Id}  & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -611,14 +751,15 @@ Error: "Invalid command sequence or user permissions" }
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 PATCH /satelliteUser/updateByUser
 
 
 \begin{center}
-\begin{tabular}{|p{2cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\begin{longtable}{|p{2cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\caption{Unit Tests for \newline PATCH /satelliteUser/updateByUser}
 \hline
 \textbf{Id}  & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -679,7 +820,7 @@ Error: "Invalid command sequence or user permissions" }
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
@@ -687,7 +828,8 @@ Error: "Invalid command sequence or user permissions" }
 GET /satelliteUser/getUserBySatellite
 
 \begin{center}
-\begin{tabular}{|p{2cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\begin{longtable}{|p{2cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\caption{Unit Tests for \newline GET /satelliteUser/getUserBySatellite}
 \hline
 \textbf{Id}  & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -702,7 +844,7 @@ satelliteUsers: [] } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
@@ -710,7 +852,8 @@ satelliteUsers: [] } & Pass
 GET /satelliteUser/getCommandsBySatelliteAndUser
 
 \begin{center}
-\begin{tabular}{|p{1.5cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\begin{longtable}{|p{1.5cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\caption{Unit Tests for \newline GET /satelliteUser/getCommandsBySatelliteAndUser}
 \hline
 \textbf{Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -730,14 +873,15 @@ satelliteUsers: [] } & Pass
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 DELETE /satelliteUser/deleteByUser
 
 \begin{center}
-\begin{tabular}{|p{1.5cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\begin{longtable}{|p{1.5cm} | p{3cm} |p{2cm}| p{2cm} |p{2cm}|}
+\caption{Unit Tests for \newline DELETE /satelliteUser/deleteByUser}
 \hline
 \textbf{Id}  & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -751,7 +895,7 @@ SUM18 & { satelliteUserId: "invalidId", adminId: ObjectId} & { Message: "Invalid
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
@@ -760,7 +904,8 @@ SUM18 & { satelliteUserId: "invalidId", adminId: ObjectId} & { Message: "Invalid
 executeScheduledCommands(satelliteId: ObjectID, scheduleId: ObjectID) $\Rightarrow$ void
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for executeScheduledCommands()}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -769,14 +914,15 @@ scheduleId: ObjectID } & List of log records corresponding to the executed comma
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 rescheduleLeftoverCommand(satelliteId: ObjectID, scheduleId: ObjectID) $\Rightarrow$ void
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for rescheduleLeftoverCommand()}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -788,14 +934,15 @@ scheduleId: ObjectID } & Schedule specified in the request has no commands with 
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 addSchedulesForNext7Days(satelliteId: ObjectID, noradId: number) $\Rightarrow$ void
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for addSchedulesForNext7Days()}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -805,7 +952,7 @@ noradId: number } & Satellite specified in the request has new schedules for the
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
@@ -821,7 +968,8 @@ getSatelliteInfo(date: Date, tleLine1: number, tleLine2: number) $\Rightarrow$ \
   \}
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for \newline getSatelliteInfo()}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -855,7 +1003,7 @@ SM25 & FR-15 & { new Date(), "", "" } & Error: Invalid TLE
  & Invalid TLE & Pass
  \\
  \hline
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
@@ -864,7 +1012,8 @@ isSunLit(date: Date, lon: number,
   height: number) $\Rightarrow$ boolean
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for isSunLit()}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -880,14 +1029,15 @@ SM28 & FR-15 & { new Date(), 0, 0, 20000} & Error: Height must be in km
  & Error: Height must be in km & Pass
  \\
  \hline
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 setTLE(tle: string) $\Rightarrow$ void
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Unit Tests for setTLE()}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -899,45 +1049,22 @@ SM30 & FR-14 & { "abcd" } & Error: Invalid TLE
  & Error: Invalid TLE & Pass
  \\
 \hline
-SM30 & FR-14 & { "" } & Error: Empty TLE
+SM31 & FR-14 & { "" } & Error: Empty TLE
  & Error: Empty TLE & Pass
  \\
  \hline
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
-
-
-
-\section{Changes Due to Testing}
-
-\wss{This section should highlight how feedback from the users and from 
-the supervisor (when one exists) shaped the final product.  In particular 
-the feedback from the Rev 0 demo to the supervisor (or to potential users) 
-should be highlighted.}
-
-FR-SLN15
-\begin{itemize}
-\item This test has been removed as the stakeholders no longer requested this requirement.
-\end{itemize}
-
-performance-3 (NFR 11.3)
-\begin{itemize}
-\item Precision calculation will be tested by external library providers as the calculations are no longer in the scope of the application.
-\end{itemize}
-
-access-1 (NFR 14.1.1)
-\begin{itemize}
-\item NFR 14.1.1 has been revised and the application will only require to support Single-Sign-On (SSO) authentication instead of Multi-Factor-Authentication (MFA).
-\end{itemize}
 
 \section{Regression Testing}
 
 \subsection{Authentication Module}
 
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Regression Tests for Authentication Module}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -960,13 +1087,14 @@ password: “correct” }
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
 \subsection{Satellite Module}
 \begin{center}
-\begin{tabular}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\begin{longtable}{|p{1cm} | p{2cm} |p{2cm}| p{2cm} |p{2cm}| p{2cm}|}
+\caption{Regression Tests for Satellite Module}
 \hline
 \textbf{Id} & \textbf{Reference Req. Id} & \textbf{Input} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\
 \hline
@@ -976,42 +1104,134 @@ REG-SAT1 & NFR 14.3.1 & { port: number }
 \\
 \hline
 
-\end{tabular}
+\end{longtable}
 
 \end{center}
 
+
+
+\section{Changes Due to Testing}
+
+\subsection{Feedback from Revision 0}
+
+During the Revision 0 demonstration, the application was assessed on its functionality and overall usability. The major feedback received was the lack of integration between the different functional components. For example, both user interfaces and endpoints were created to add and update valid commands, however these two components were not integrated together. This has been resolved by integrating the frontend and backend components relating to managing satellite information and valid commands for an operator. As a result, users are able to interact with the application without intervention from a developer.
+
+\subsection{Feedback from Usability Testing}
+
+Two usability tests have been conducted to assess the application. Each test involved stakeholders as well as new users from McMaster's NEUDOSE team to evaluate the core functionalities of the web application. 
+\\ \\
+From the first usability testing demonstration, the critiques mainly highlighted issues with the UI/UX of application rather than the functionality. Specifically, users mentioned that the presentation of information for upcoming satellite overpasses felt cluttered and suggested to separate information related to satellite into different sections. After reviewing the feedback from this usability test, changes to the user interface was made such that overpasses for a satellite was presented in a tabular format as opposed to a card. This improved the readability and organization of data in the frontend.
+\\ \\ 
+Furthermore, heading into the second usability testing demonstration with member of the NEUDOSE team, all usability issues described above had been addressed. During this demonstration, users responded positively to the new UI/UX changes, however, there were some issues when loading changes to satellite information in the frontend. This has been resolved by refactoring how the information from the backend is captured in the frontend. To address this, an external query management package known as TanStack Query was integrated into the frontend facing application to manage requests sent to the backend. This provided the ability to automatically react and load data from the backend, ensuring data changes are timely displayed. Additionally, users felt that as the number of schedules for a satellite increases, it would be difficult to find a particular schedule. This was addressed by adding a date filter for satellite passes, which enables users to search for schedules by specifying the start and end dates.
+
+\subsection{Additional Application Changes}
+Although FR-SLN2 was verified locally, the initial deployment of the application's backend did not support evaluating this test in production. When testing FR-SLN2 on the deployed backend of the application, there were issues establishing a TCP connection. For some context, the backend application was deployed using DigitalOcean's App Platform which is a containerized service. After investigating, this deployment had very limited customizing features. In particular, DigitalOcean's App Platform did not offer the ability to open a port to establish a TCP connection. As a result, a connection could not be made with the deployment build and FR-SLN2 was verified not able to be tested in production. In order to resolve this, a virtual machine (VM) had been provisioned on DigitalOcean. This VM was then configured to run the backend application. Since a VM has customizable options, a TCP port was configured which was then used to establish a valid TCP connection. Finally, the FR-SLN2 functional requirement test was verified with this new deployment.
+
+\subsection{Changes to the VnV Plan}
+
+FR-SLN15
+\begin{itemize}
+\item This test has been removed as the stakeholders no longer requested this requirement.
+\end{itemize}
+\\
+performance-3 (NFR 11.3)
+\begin{itemize}
+\item Precision calculation will be tested by external library providers as the calculations are no longer in the scope of the application.
+\end{itemize}
+\\
+access-1 (NFR 14.1.1)
+\begin{itemize}
+\item NFR 14.1.1 has been revised and the application will only require to support Single-Sign-On (SSO) authentication instead of Multi-Factor-Authentication (MFA).
+\end{itemize}
+
+
 \section{Automated Testing}
+
+For the frontend repository, leo-client-app, we use Next.js and Netlify's built-in testing mechanism to ensure both local and production environments are error-free. Locally, developers can run the command \textbf{npm run build} to create a build directory with a production build of the application. Developers can run this command to verify that their code has no production issues before pushing from their remote machine. The execution of this command is also automated via Github Actions anytime a commit is pushed into the repository as well as during merging from feature branches to the \textbf{main} branch of the repository. Since the main branch reflects the production environment, this build check must pass before a feature branch can be merged into the main branch. In addition, a Netlify build is created through Github Actions for every feature branch being merged into the main branch. Since Netlify is hosting the frontend-facing components of the application, this build must be successful before merging into the main branch.
+\\ \\
+For the backend repository, leo-server-app, tests are automated using Jest.js. All unit tests pertaining to the Satellite, Schedule, and Command modules are found in the src/tests folder. Through Github Actions, all tests are automatically executed when issuing a pull request to merge to the main branch. Developers can also automate this test by running the command, \textbf{npm run test} locally. This is also the same command Github Actions uses upon pushing a commit to a branch.
 		
 \section{Trace to Requirements}
 \begin{longtable}{|p{0.45\linewidth}|p{0.45\linewidth}|}
 \hline
 \textbf{Req. ID} & \textbf{System Test ID} \\
 \hline
-FR-3 & SM3 \\
+FR-1 & FR-SLN1, SM3 \\
 \hline
-FR-4 & SM3 \\
+FR-2 & FR-SLN2, FR-SLN3, FR-SLN4 \\
 \hline
-FR-5 & SM3 \\
+FR-3 & FR-SLN5, FR-SLN6 \\
 \hline
-FR-10 & SM10 \\
+FR-4 & FR-SLN5, FR-SLN6, SM3 \\
 \hline
-FR-11 & SM4, SM9, SM11 \\
+FR-5 & FR-SLN5, FR-SLN6, SM3 \\
 \hline
-FR-12 & SM1 \\
+FR-6 & FR-SLN7 \\
 \hline
-FR-13 & SM5, SM6, SM7, SM8 \\
+FR-7 & FR-SLN3, FR-SLN4, FR-SLN8 \\
 \hline
-FR-16 & SM1, SM2, SM12 \\
+FR-8 & FR-SLN8 \\
 \hline
-FR-17 & SM1, SM2, SM12 \\
+FR-10 & FR-SLN9, SM10, SM20, SM21 \\
 \hline
-NFR-14.1.2 & AM1 \\
+FR-11 & FR-SLN9, SM4, SM9, SM11, SM21 \\
 \hline
-NFR-14.1.1 & AM2, AM3 \\
+FR-12 & FR-SLN11, SM1 \\
 \hline
-NFR-14.1.2 & AM3 \\
+FR-13 & FR-SLN12, SM5, SM6, SM7, SM8 \\
 \hline
-NFR-14.3.1 & REG-SAT1 \\
+FR-14 & FR-SLN13, SM7, SM8, SM18, SM19, SM29, SM30, SM31 \\
+\hline
+FR-15 & FR-SLN14, SM7, SM8, SM10, SM11, SM12, SM23, SM24, SM25, SM26, SM27, SM28 \\
+\hline
+FR-16 & SM1, SM2, SM12, SM13, SM14, SM22 \\
+\hline
+FR-17 & FR-SLN16, SM1, SM2, SM12, SM22 \\
+\hline
+NFR-10.1 & usability-1 \\
+\hline
+NFR-10.3 & usability-2 \\
+\hline
+NFR-10.5 & usability-3 \\
+\hline
+NFR-11.2 & performance-2 \\
+\hline
+NFR-11.4 & performance-4 \\
+\hline
+NFR-12.2.1 & environmental-1 \\
+\hline
+NFR-12.2.2 & environmental-2 \\
+\hline
+NFR-12.5 & environmental-3 \\
+\hline
+NFR-13.1.1 & maintenance-1 \\
+\hline
+NFR-13.1.2 & maintenance-2 \\
+\hline
+NFR-13.1.3 & maintenance-3 \\
+\hline
+NFR-13.1.4 & maintenance-4 \\
+\hline
+NFR-13.1.5 & maintenance-5 \\
+\hline
+NFR-13.2.1 & support-1 \\
+\hline
+NFR-13.2.2 & support-2 \\
+\hline
+NFR-13.2.3 & support-3 \\
+\hline
+NFR-14.1.1 & access-1, AM2, AM3 \\
+\hline
+NFR-14.1.2 & access-2, AM1, AM3 \\
+\hline
+NFR-14.2.5 & integrity-5 \\
+\hline
+NFR-14.2.6 & integrity-6 \\
+\hline
+NFR-14.2.7 & integrity-7 \\
+\hline
+NFR-14.3.1 & privacy-1, REG-
+SAT1 \\
 \hline
 \end{longtable}
 
@@ -1031,11 +1251,151 @@ Satellite User Module & SUM1, SUM2, SUM3, SUM4, SUM5, SUM6, SUM7, SUM8, SUM9, SU
 Satellite Module & REG-SAT1 \\
 \hline
 \end{longtable}
-
+\newpage
 \section{Code Coverage Metrics}
 
+The below image details the code coverage for the leo-server-app repository. This provides metrics on the percentage of statements, branches, functions, and lines covered for each file.
+
+\begin{figure}[h]
+
 \graphicspath{./BackendCodeCoverage/}
-\includegraphics[width=15cm, height=10cm]{BackendCodeCoverage.png}
+\includegraphics[width=15cm, height=10cm]
+{BackendCodeCoverage.png}
+\caption{Code Coverage Metrics}
+\end{figure}
+
+\section{Appendix --- Survey}
+\subsection{Usability Survey Questions and Answers}
+
+Was the application intuitive for you to use? Rate from 1-5 from least to most intuitive.
+
+\begin{itemize}
+    \item Usability Test 1: 3/5
+    \item Usability Test 2: 5/5
+\end{itemize}
+
+\\ \\
+
+Was any aspect of the application difficult to use? Provide any examples if you can. 
+
+\begin{itemize}
+    \item it's unclear how the scheduler works (i.e. you select a satellite then select a pass, then you can set commands but it's not obvious those commands have been succesfully assigned to that pass). It would be nice to be able to, from within the scheduling editor page, change which pass the schedule is being set up for.
+    \item it would also be nice if once a set of commands is input for a pass the application gave some confirmation the schedule has been set and when it is set for.
+    \item Not really, I thought everything was intuitive and easily navigable.
+\end{itemize}
+
+\\ \\
+
+Did you encounter any bugs/errors/issues while you were using the application? Provide any examples if you can.
+
+\begin{itemize}
+    \item i was only there for ~10 minutes but nothing seemed to break. Not sure if setting the edit schedule with a new command (such as teardown) does anything yet, but if it's supposed to adjust the schedule the pass schedule does not seem to update with the new command
+    \item The scheme could use some fixing (light\dark mode).
+\end{itemize}
+
+\\ \\
+
+How clear and understandable was the content within the application? Were there any parts that confused you?
+
+\begin{itemize}
+    \item Interface mostly makes sense! see previous comment on scheduling being unclear when the new schedule is set
+    \item I think everything was clear and easily navigable.
+\end{itemize}
+
+\\ \\
+
+Please provide your thoughts on the overall visual design of our application. 
+
+\begin{itemize}
+    \item Generally good, the white text on light background is somewhat hard to read (sattelites, schedule, logs, etc.)
+    \item I think it looked nice, simple and easy to navigate. However, the area where it displayed the satellites command schedule felt a little too cluttered.
+\end{itemize}
+
+\\ \\
+
+Are there any aspects of the UI that you found unappealing? Please explain why.
+
+\begin{itemize}
+    \item The area where there it listed the next command schedule for satellites could benefit from a scroll bar.
+\end{itemize}
+
+\\ \\
+
+How satisfied are you with the overall application? From a scale of 1-5 from least satisfied to most.
+
+\begin{itemize}
+    \item First test: 3/5
+    \item Second test: 4/5
+\end{itemize}
+
+\\ \\
+
+What do you like most about the application? What do you like least?
+
+\begin{itemize}
+    \item I liked how you show the schedule commands for the given week, etc. I also liked the extra information displayed for every satellite.
+\end{itemize}
+
+\\ \\
+
+Are there any features/aspects of the application that you found useful or unnecessary? Please provide some examples. 
+
+\begin{itemize}
+    \item I think everything was very nice and nothing was redundant.
+\end{itemize}
+
+\\ \\
+
+What part of the application in your opinion needs the most improvement. Why?
+
+\begin{itemize}
+    \item The area where it displayed the scheduled commands is the biggest issue.
+\end{itemize}
+
+\\ \\
+
+How can we improve the application to better meet your expectations? 
+
+\begin{itemize}
+    \item More organized (possibly add tabs?) and add scroll bar.
+\end{itemize}
+
+\\ \\
+
+Is anything missing in your opinion? What would you add? 
+
+\begin{itemize}
+    \item Scroll bar for the commands and possibly make it less cluttered, a back button would be nice. Overall good job.
+\end{itemize}
+
+\subsection{Usability Survey Notes and Summary}
+\begin{itemize}
+    \item The initial testing involved users with no prior experience with the application, focusing on their ability to learn and navigate the system independently. The feedback highlights both strengths and areas for enhancement in the application's design and functionality.
+    \item Strengths Noted:
+    \begin{itemize}
+        \item The satellite and overpass functionality received positive remarks for its quick response when navigating to specific longitudes and latitudes, indicating efficient performance in these areas.
+        \item The command deletion process within the application was described as "pretty solid," suggesting it is user-friendly and reliable.
+    \end{itemize}
+    \item Areas for Improvement:
+    \begin{itemize}
+        \item Visibility and Clarity: There was confusion about the "valid commands box," suggesting a need for increased visibility and clearer indications of its purpose. It's essential to make it more obvious to users what the valid commands are.
+        \item Logs Page Functionality: Questions were raised about the purpose of the logs page, with suggestions to include filters for better usability, indicating a need for clearer presentation and functionality.
+        \item User Interface (UI) Considerations:
+        \begin{itemize}
+            \item The all-white interface led to suggestions for a light mode/dark mode feature, catering to different user preferences.
+            \item The addition of a feature to easily add satellites to the database directly from the first page was recommended.
+            \item Faster loading times for satellite changes were requested to enhance user experience.
+            \item Improvements in readability and presentation of information for upcoming satellite passes, possibly through a tabular format, were suggested to make the data more accessible.
+            \item A reevaluation of navigation within the schedule queue, seeking alternatives to horizontal scrolling, was advised.
+            \item The introduction of a filter for satellite passes, enabling searches by date or specific passes, was recommended to improve usability.
+            \item A call for a design that avoids the need for page scrolling, aiming to present all relevant information simultaneously.
+            \item The presentation of information in blocks or separated formats was suggested to improve visual hierarchy and readability, particularly for satellite information.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+
+
 
 
 
