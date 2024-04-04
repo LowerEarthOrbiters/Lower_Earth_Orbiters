@@ -1,4 +1,4 @@
-# MCT Source Code
+# MCT (Mission Control Terminal) Source Code
 
 The folders and files for this project are as follows:
 
