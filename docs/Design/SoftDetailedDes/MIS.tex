@@ -19,6 +19,8 @@
 \usepackage[section]{placeins}
 \usepackage{caption}
 \usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{bm}
 
 \hypersetup{
 bookmarks=true,     % show bookmarks bar?
@@ -38,7 +40,7 @@ urlcolor=cyan          % color of external links
 
 \begin{document}
 
-\title{Module Interface Specification for \progname{}}
+\title{Module Interface Specification for \progname{MCT}}
 
 \author{\authname}
 
@@ -53,7 +55,8 @@ urlcolor=cyan          % color of external links
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-\today & 1.0 & Finished MIS doc\\
+Jan. 18, 2024 & 1.0 & Finished MIS doc\\
+April 3, 2024 & 2.0 & Updated documentation to reflect current implementation of the application and updated MIS based on feedback\\
 % Date 2 & 1.1 & Notes\\
 \bottomrule
 \end{tabularx}
@@ -62,7 +65,7 @@ urlcolor=cyan          % color of external links
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \wss. This section records information for easy reference.
+See SRS Documentation at \href{https://github.com/LowerEarthOrbiters/Lower_Earth_Orbiters/tree/main/docs/SRS}{this link}. This section records information for easy reference.
 
 \subsection{Abbreviations and Acronyms}
 
@@ -81,8 +84,8 @@ See SRS Documentation at \wss. This section records information for easy referen
   SRS & Software Requirements Specification\\
   UC & Unlikely Change \\
   FIFO & First In First Out \\
-  MCT & Mission Control Terminal 
-  \wss{etc.} & \wss{...}\\
+  MCT & Mission Control Terminal \\
+  SSL & Secure Socket Layer \\
   \bottomrule
 \end{tabular}\\
 
@@ -97,25 +100,23 @@ See SRS Documentation at \wss. This section records information for easy referen
 \section{Introduction}
 
 The following document details the Module Interface Specifications for
-\wss{Fill in your project name and description}
+MCT.
 
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
-found at \url{...}.  \wss{provide the url for your repo}
+found at \href{https://github.com/LowerEarthOrbiters/Lower_Earth_Orbiters}{this link}.
 
 \section{Notation}
 
-\wss{You should describe your notation.  You can use what is below as
-  a starting point.}
-
-The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
+The structure of the MIS for modules comes from Lower Earth Orbiters,
 with the addition that template modules have been adapted from
-\cite{GhezziEtAl2003}.  The mathematical notation comes from Chapter 3 of
-\citet{HoffmanAndStrooper1995}.  For instance, the symbol := is used for a
+Dr. Spencer Smith's capstone template repository.  The mathematical notation comes from Chapter 3 of
+ David Gries and Fred B. Schneider: A Logical Approach to Discrete
+Math.  For instance, the symbol := is used for a
 multiple assignment statement and conditional rules follow the form $(c_1
 \Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
 
-The following table summarizes the primitive data types used by \progname. 
+The following table summarizes the primitive data types used by MCT. 
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -134,10 +135,10 @@ Command & Object & Object representing command sequence record from database.\\
 \end{center}
 
 \noindent
-The specification of \progname \ uses some derived data types: sequences, strings, and
+The specification of MCT uses some derived data types: sequences, strings, and
 tuples. Sequences are lists filled with elements of the same data type. Strings
 are sequences of characters. Tuples contain a list of values, potentially of
-different types. In addition, \progname \ uses functions, which
+different types. In addition, MCT  uses functions, which
 are defined by the data types of their inputs and outputs. Local functions are
 described by giving their type signature followed by their specification.
 
@@ -244,6 +245,77 @@ delete() & \{databaseId: string, rowselector: string\} & N/A & Deletes an entry 
 
 \end{center}
 
+\textbf{Formal Specification - insert()}\\
+Let $D$ be the set representing our database, where each element $r_i \in D$ is a record within the database. The state of the database before any insert operation can be represented as:
+
+\[
+D = \{r_1, r_2, \ldots, r_n\}
+\]
+
+The \textit{insert} operation on the database can be formalized as adding a new record $r_{\text{new}}$ to the set $D$. This operation results in a new set $D'$:
+
+\[
+D' = D \cup \{r_{\text{new}}\}
+\]
+
+Hence, after the insert operation, the state of the database is represented as:
+
+\[
+D' = \{r_1, r_2, \ldots, r_n, r_{\text{new}}\}
+\]
+\\
+\textbf{Formal Specification - update()}\\
+Assume our database $D$ is a set of records, where each record is represented as a tuple $(id, data)$, with $id$ being a unique identifier and $data$ representing the record's content. The state of $D$ before the update operation can be defined as:
+
+\[
+D = \{(id_1, data_1), (id_2, data_2), \ldots, (id_n, data_n)\}
+\]
+
+To update a record with identifier $id_i$ to new data $data_i'$, we define the update operation as follows:
+
+\[
+D' = \{(id, data) \in D | id \neq id_i\} \cup \{(id_i, data_i')\}
+\]
+
+This operation results in a new state of the database $D'$ where:
+
+\[
+D' = \{(id_1, data_1), \ldots, (id_i, data_i'), \ldots, (id_n, data_n)\}
+\]
+
+After the update operation, $D'$ includes the updated record $(id_i, data_i')$ while retaining all other records unchanged.
+\\\\
+\textbf{Formal Specification - read()}\\
+Given a database $D$ consisting of records, where each record is a tuple $(id, data)$, the read operation for a record with a specific $id_i$ can be formalized as follows:
+
+\[
+\text{read}(id_i) = data_i \quad \text{for} \quad (id_i, data_i) \in D
+\]
+
+The operation retrieves $data_i$ corresponding to the unique identifier $id_i$. If the record exists in $D$, the output is $data_i$; otherwise, the operation returns a null or error indicating that the record does not exist.
+\\\\
+\textbf{Formal Specification - delete()}\\
+Consider $D$ to be the set representing our database, with each element being a record defined as a tuple $(id, data)$. The state of the database before any delete operation is:
+
+\[
+D = \{(id_1, data_1), (id_2, data_2), \ldots, (id_n, data_n)\}
+\]
+
+To delete a record with identifier $id_i$ from $D$, we formalize the delete operation as removing $(id_i, data_i)$ from $D$, resulting in a new set $D'$:
+
+\[
+D' = D - \{(id_i, data_i)\}
+\]
+
+Thus, the state of the database after the delete operation is represented without the record $(id_i, data_i)$:
+
+\[
+D' = \{(id_1, data_1), \ldots, \not\exists(id_i, data_i), \ldots, (id_n, data_n)\}
+\]
+
+This operation ensures that the specified record is no longer part of the database post-deletion.
+
+
 \section{MIS of Log Module} \label{Module}
 
 \subsection{ Overview}
@@ -266,7 +338,7 @@ N/A
 \hline
 \textbf{Name} & \textbf{Input} & \textbf{Output} & \textbf{Exceptions} \\
 \hline
-/getLogs & satelliteId & logs & N/A \\
+/getLogs & \{satelliteId: string\} & \{satelliteId: string, commandId: string, message: string, createdAt: dateTime\} & N/A \\
 \hline
 
 \end{tabular}
@@ -301,7 +373,14 @@ MongoDB is an ACID compliant database and ensures persisted data is consistent.
 
 \subsubsection{ Access Routine Semantics}
 
-N/A
+\begin{itemize}
+  \item \textbf{/getLogs}
+  \begin{itemize}
+    \item \textit{Input:} \texttt{satelliteId}
+    \item \textit{Output:} Logs- \{ satelliteId: string, commandId: string, message: string, createdAt: dateTime \}
+    \item \textit{Semantics:} This function fetches and returns all log entries associated with the given \texttt{satelliteId}. The returned \texttt{logs} are in a format that includes the command response, the time it was sent, and the time it was updated.
+  \end{itemize}
+\end{itemize}
 
 \subsubsection{ Local Functions}
 \begin{center}
@@ -309,11 +388,35 @@ N/A
 \hline
 \textbf{Name} & \textbf{Input} & \textbf{Output} & \textbf{Description} \\
 \hline
-fetchLogs() & (satelliteId: string) & \{logs: string\} & Returns the logs associated with every command for the specified satellite. \\
+fetchLogs() & \{satelliteId: string\} & \{satelliteId: string, commandId: string, message: string, createdAt: dateTime\} & Returns the logs associated with every command for the specified satellite. \\
 \hline
 \end{tabular}
 \end{center}
 
+\textbf{Formal Specification - fetchLogs()}\\
+Consider our logging system as a database $L$, where each log entry is represented by a tuple $(satelliteId, logEntry)$, with $satelliteId$ identifying the satellite and $logEntry$ representing the content of the log. The complete set of logs is represented as:
+
+\[
+L = \{(satelliteId_1, logEntry_1), (satelliteId_2, logEntry_2), \ldots, (satelliteId_n, logEntry_n)\}
+\]
+
+The \textit{fetchLogs} operation for a specific satellite ID, $satelliteId_i$, can be formalized as retrieving all log entries associated with $satelliteId_i$:
+
+\[
+\text{fetchLogs}(satelliteId_i) = \{logEntry \,|\, (satelliteId, logEntry) \in L \, \text{and} \, satelliteId = satelliteId_i\}
+\]
+
+This operation results in a subset of $L$, $L'$, containing only the logs related to $satelliteId_i$:
+
+\[
+L' = \{logEntry_1, logEntry_2, \ldots, logEntry_m\} \quad \text{for all} \quad (satelliteId_i, logEntry) \in L
+\]
+
+Where:
+\begin{itemize}
+    \item $L'$ is the set of all log entries related to $satelliteId_i$.
+    \item $m$ is the number of logs related to $satelliteId_i$.
+\end{itemize}
 
  
 \section{MIS of {Satellite Module}} \label{Module} 
@@ -339,7 +442,7 @@ N/A
 \hline
 \textbf{Name} & \textbf{Input} & \textbf{Output} & \textbf{Exceptions} \\
 \hline
-/getSatelliteInfo & N/A & positionEci: $\mathbb{R}$,
+/getSatelliteInfo & noradId: string & positionEci: $\mathbb{R}$,
  velocityEci: $\mathbb{R}$,
 longitude: $\mathbb{R}$,
 latitude: $\mathbb{R}$,
@@ -409,7 +512,23 @@ Assuming that external APIs (Spacetrack) and libraries (SGP4) are always accurat
 
 \subsubsection{Access Routine Semantics}
 
-N/A
+\begin{center}
+\begin{tabular}{|p{3.2cm} |p{3cm} | p{3.6cm} |p{4cm} |p{2.7cm}|}
+\hline
+\textbf{Name} & \textbf{Transition} & \textbf{Output} & \textbf{Description} & \textbf{Exceptions} \\
+\hline
+/getSatelliteInfo & Retrieves the current state information of the satellite. & An object containing satellite's position and velocity in ECI coordinates, longitude, latitude, height, azimuth, and elevation. & Accesses the latest telemetry data for the satellite and computes its current state, including position in Earth-Centered Inertial (ECI) coordinates and ground track information. & N/A \\
+\hline
+/getPolarPlotData & Generates data for a polar plot of the satellite's overpasses. & An array of objects, each containing the azimuth and elevation of the satellite during an overpass. & Calculates the satellite's position relative to the observer's location on Earth for a series of future overpasses between the specified start and end dates. & N/A \\
+\hline
+
+/getMaxElevation & Calculates the maximum elevation of the satellite's overpass. & A real number indicating the maximum elevation angle. & Determines the highest point in the satellite's trajectory, relative to the observer's horizon, for the next overpass. & N/A \\
+\hline
+
+/getNextPasses & Retrieves information on the next passes of a satellite within a specified date range. &A collection of objects each containing the type, time, azimuth, and elevation of a pass. & Computes the upcoming overpasses of a satellite based on its orbital data and the provided date range, returning detailed pass information. & N/A \\
+\hline
+\end{tabular}
+\end{center}
 
 \subsubsection{Local Functions}
 \begin{center}
@@ -439,6 +558,29 @@ rangeSat : number,
 \hline
 \end{tabular}
 \end{center}
+
+\textbf{Formal Specification - getSatelliteInfo()} \\
+Assume the satellite information system is retrieved from an online database $S$, where each record is a tuple containing satellite identification and its orbital parameters:
+
+\[
+S = \{(id_1, \bm{O}_1), (id_2, \bm{O}_2), \ldots, (id_n, \bm{O}_n)\}
+\]
+
+Here, $id_i$ represents the unique identifier of a satellite (noradID), and $\bm{O}_i$ represents the set of orbital parameters for satellite $i$, such as position ($\bm{p}$), velocity ($\bm{v}$), and other relevant state variables.
+
+The \textit{getSatelliteInfo} operation, for a specific satellite ID, $id_i$, is formalized as retrieving the orbital parameters $\bm{O}_i$ associated with $id_i$:
+
+\[
+\text{getSatelliteInfo}(id_i) = \bm{O}_i \quad \text{for} \quad (id_i, \bm{O}_i) \in S
+\]
+
+The output $\bm{O}_i$ can be further detailed as:
+
+\[
+\bm{O}_i = \{\text{position} \, \bm{p}_i, \text{velocity} \, \bm{v}_i, \ldots\}
+\]
+
+This operation effectively returns the current state of the satellite, including its position, velocity, and other specified parameters, crucial for tracking and communication purposes.
 
  
 
@@ -523,11 +665,22 @@ DB\_URI & string & Connection path to MongoDB instance \\
 \subsubsection{Access Routine Semantics}
 
 \begin{center}
-\begin{tabular}{|p{3.2cm} |p{3cm} | p{1.3cm} |p{5cm} |p{4cm}|}
+\begin{tabular}{|p{3.2cm} |p{3cm} | p{2.3cm} |p{4cm} |p{4cm}|}
 \hline
 \textbf{Name} & \textbf{Transition} & \textbf{Output} & \textbf{Description} & \textbf{Exceptions} \\
 \hline
 executeOverpass() & Indexes state variable overpassQueueMap, then unloads a queue of type SatelliteQueue. Then, loads queue with command sequences scheduled for the satellite’s next overpass. & N/A & Executes all command sequences scheduled for the overpass in a FIFO order and records logs of the responses in the database & If a connection cannot be established with the satellite system, the indexed queue shall not be unloaded and therefore, will not be executed. \\
+\hline
+/schedule /addCommand & Adds a command to the schedule of the satellite. & A \texttt{Command} object representing the scheduled command. & Adds a command to a schedule list & If the command sequence is not in the user and satellite system's permission list. \\
+\hline
+
+/schedule /updateCommand & Updates an existing command in the satellite's schedule. & A \texttt{Command} object representing the updated scheduled command. & Replaces the existing command sequence with the new one provided, while maintaining its scheduled execution time. & If the command sequence is not in the user and satellite system's permission list. \\
+\hline
+
+/schedule /cancelCommand & Cancels a command from the satellite's schedule. & \texttt{void} (no output) & Removes the specified command from the schedule & If the user does not have permission to cancel the command or if the overpass has passed. \\
+\hline
+
+/getNextPasses & Retrieves information on the next passes of a satellite within a specified date range. &A collection of objects each containing the type, time, azimuth, and elevation of a pass. & Computes the upcoming overpasses of a satellite based on its orbital data and the provided date range, returning detailed pass information. & N/A \\
 \hline
 \end{tabular}
 \end{center}
@@ -544,8 +697,31 @@ executeOverpass() & satelliteId: string, overpassId: string & void & Executes al
 \end{tabular}
 \end{center}
 
+\textbf{Formal Specification - executeOverpass()} \\
+The \textit{executeOverpass} operation is crucial for managing the execution of scheduled commands for a satellite during its overpass. Consider the set $C$ representing all scheduled commands for a given overpass, where each command $c_i$ has associated parameters indicating its scheduled execution time, target satellite, and specific action:
 
-\section{MIS of {SatelliteQueue Module}} \label{Module} 
+\[
+C = \{c_1, c_2, \ldots, c_n\}
+\]
+
+For a specific overpass identified by $overpassId$, the \textit{executeOverpass} operation is formalized as sequentially executing each command $c_i \in C$ related to that overpass. This process can be represented as a function $f$ applied to the set of commands $C$, resulting in a new state $C'$ reflecting the execution status of each command:
+
+\[
+C' = f(C) = \{execute(c_i) \, | \, c_i \in C\}
+\]
+
+Where the function $execute(c_i)$ denotes the execution of command $c_i$, altering its state to reflect completion or failure based on the execution outcome. The set $C'$ represents the updated state of scheduled commands post-execution, with each element indicating the result of its execution process (e.g., success, failure, pending).
+
+The operation ensures that all commands scheduled for the specific overpass are executed in accordance with their scheduling parameters and that their execution results are accurately captured:
+
+\[
+executeOverpass(overpassId) = C' \quad \text{for} \quad overpassId \, \text{associated with} \, C
+\]
+
+This process underlines the system's ability to handle scheduled commands efficiently, ensuring that each command intended for execution during a satellite's overpass is processed accordingly.
+
+
+\section{MIS of SatelliteQueue Module} \label{Module} 
 
 \subsection{Overview}
 
@@ -595,23 +771,54 @@ N/A
 \subsubsection{Access Routine Semantics}
 
 \begin{center}
-\begin{tabular}{|p{3.2cm} |p{3cm} | p{1.3cm} |p{5cm} |p{4cm}|}
+\begin{tabular}{|p{1.6cm} |p{4cm} | p{2.5cm} |p{2.5cm} |p{4cm}|}
 \hline
-\textbf{Name} & \textbf{Transition} & \textbf{Output} & \textbf{Description} & \textbf{Exceptions} \\
+\textbf{Name} & \textbf{Transition} & \textbf{Input} & \textbf{Output} & \textbf{Description} \\
 \hline
-push() & Modifies the overpassQueueMap and adds a command sequence to the queue of type SatelliteQueue. & N/A & Adds a command sequence to the queue of type SatelliteQueue. & N/A \\
+push() & Modifies the overpassQueueMap and adds a command sequence to the queue of type SatelliteQueue. & \{commandId: string, userId: string, createdAt: dateTime\} & N/A & Adds a command sequence to the queue of type SatelliteQueue. \\
 \hline
-pop() & Modifies the overpassQueueMap and removes the top item from the queue of type SatelliteQueue. & N/A & Removes the top command sequence from the queue of type SatelliteQueue. & N/A \\
+pop() & Modifies the overpassQueueMap and removes the top item from the queue of type SatelliteQueue. & N/A & \{commandId: string, userId: string, createdAt: dateTime\} & Removes the top command sequence from the queue of type SatelliteQueue. \\
 \hline
 \end{tabular}
 \end{center}
+
+\textbf{Formal specification - push()} \\
+The \textit{push} operation adds a new command to the queue of scheduled commands for a satellite. Let $Q$ represent the queue of commands, where $Q = \{c_1, c_2, \ldots, c_n\}$ and each $c_i$ is a command scheduled for execution.
+
+The push operation, for a new command $c_{\text{new}}$, can be formalized as appending $c_{\text{new}}$ to the end of the queue $Q$:
+
+\[
+Q' = Q + \{c_{\text{new}}\}
+\]
+
+After the operation, the updated queue $Q'$ represents the original queue with $c_{\text{new}}$ added as the last element:
+
+\[
+Q' = \{c_1, c_2, \ldots, c_n, c_{\text{new}}\}
+\]
+\\
+\textbf{Formal Specification - pop()}\\
+The \textit{pop} operation removes the first command from the queue $Q$ and returns it. This operation is represented as removing $c_1$ from $Q$:
+
+\[
+(c_{\text{pop}}, Q') = \text{pop}(Q)
+\]
+
+Where $c_{\text{pop}}$ is the command being removed and $Q'$ is the queue after removal:
+
+\[
+Q' = \{c_2, c_3, \ldots, c_n\}, \quad \text{and} \quad c_{\text{pop}} = c_1
+\]
+
+The pop operation thus dequeues the first command for execution or processing and updates the queue to reflect this removal.
+
 
 \subsubsection{Local Functions}
 N/A
 
 
 
-\section{MIS of \wss{User Module}} \label{Module} 
+\section{MIS of User Module} \label{Module} 
 
 
 \subsection{Overview}
@@ -629,15 +836,15 @@ N/A
 
 
 \begin{center}
-\begin{tabular}{p{6cm} p{2cm} p{4cm} p{2cm}}
+\begin{tabular}{p{4cm} p{4cm} p{4cm} p{2cm}}
 \hline
 \textbf{Name} & \textbf{Input} & \textbf{Output} & \textbf{Exceptions}\\
 \hline
-/createUser& Email, role& New user& N/A\\
+/createUser& \{Email: string, role: string\}& New user& N/A\\
 \hline
 /getAllOperators& N/A&  Returns all the operators& N/A\\
 \hline
-/updateOperatorRole/:userId& userId, role& Updates the user’s role& N/A\\
+/updateOperatorRole& \{userId: string, adminId: string, role: string& Updates the user’s role& N/A\\
 
 \end{tabular}
 
@@ -671,15 +878,27 @@ MongoDB is an ACID compliant database and ensures persisted data is consistent.
 
 \subsubsection{Access Routine Semantics}
 
-N/A
+\begin{center}
+\begin{tabular}{|p{3.7cm} |p{3cm} | p{3.6cm} |p{4cm} |p{2.3cm}|}
+\hline
+\textbf{Name} & \textbf{Transition} & \textbf{Output} & \textbf{Description} & \textbf{Exceptions} \\
+\hline
+/createUser & Registers a new user in the system. & Confirmation of the creation of a new user. & Takes an email and a role, and creates a new user account assigning the specified role. & N/A \\
+\hline
+/getAllOperators & Retrieves a list of all operator accounts. & A list containing all the operators in the system. & Queries the database for all users with an operator role and returns their details. & N/A \\
+\hline
 
 
+/updateOperatorRole /:userId & Updates the role of an existing operator. & Confirmation of the updated role for the user. & Accepts a userId and a new role, and updates the specified user's role in the system's records. & N/A \\
+\hline
+\end{tabular}
+\end{center}
 
 \subsubsection{Local Functions}
 
 N/A
 
-\section{MIS of \wss{Authentication Module}} \label{Module} 
+\section{MIS of Authentication Module} \label{Module} 
 
 
 
@@ -749,7 +968,92 @@ N/A
 
 N/A
 
-\section{MIS of \wss{Backend Service}} \label{Module} 
+\section{MIS of WebSocket Module} \label{Module}
+
+\subsection{Overview}
+The WebSocket module provides a real-time communication channel between the MIST application and the ground station. It is responsible for establishing a secure WebSocket connection, handling incoming messages, and sending data to the ground station.
+
+\subsection{Uses}
+The WebSocket Module is designed to enable the MIST application to maintain a persistent connection with the ground station, allowing for bi-directional communication. This module is primarily used for sending command sequences to the ground station and receiving acknowledgments or data in return.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+N/A
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{6cm} p{2cm} p{4cm} p{2cm}}
+\hline
+\textbf{Name} & \textbf{Input} & \textbf{Output} & \textbf{Exceptions}\\
+\hline
+/connect& N/A& WebSocket connection instance& N/A\\
+\hline
+/sendData& \{Command: string\}& Acknowledgment or response in term of string based on the Command sent from ground station& WebSocket not connected\\
+\hline
+/disconnect& N/A& Confirmation of disconnection& N/A\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{center}
+\begin{tabular}{|p{4cm} |p{4cm} |p{4cm}|}
+\hline
+\textbf{Name} & \textbf{Type} & \textbf{Description} \\
+\hline
+clientSocket & WebSocket & The active WebSocket connection \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Environment Variables}
+
+\begin{center}
+\begin{tabular}{|p{4cm} |p{4cm} |p{4cm}|}
+\hline
+\textbf{Name} & \textbf{Type} & \textbf{Description} \\
+\hline
+KEY\_CERT & File Path & Path to the SSL certificate file \\
+\hline
+KEY\_PATH & File Path & Path to the SSL key file \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+    \item The ground station is continuously running and can accept WebSocket connections.
+    \item The SSL certificate and key are valid and have not expired.
+    \item The environment variables for the SSL certificate and key paths are set correctly.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\begin{center}
+\begin{tabular}{|p{3.7cm} |p{3cm} | p{3.6cm} |p{4cm} |p{2.3cm}|}
+\hline
+\textbf{Name} & \textbf{Transition} & \textbf{Output} & \textbf{Description} & \textbf{Exceptions} \\
+\hline
+/connect & Establishes a connection to the ground station. & A WebSocket connection instance. & Initiates a WebSocket connection using the provided SSL certificate and key. & N/A \\
+\hline
+/sendData & Sends a command sequence through the open WebSocket connection. & Acknowledgment or response in term of string based on the Command sent from ground station & Transmits a command to the ground station and waits for a response. & WebSocket not connected \\
+\hline
+/disconnect & Closes the WebSocket connection. & Confirmation of disconnection. & Terminates the WebSocket connection with the ground station. & N/A \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Local Functions}
+
+N/A
+
+\section{MIS of Backend Service} \label{Module} 
 \subsection{Overview}
 This module bridges the front end user interface with all the other aforementioned modules that deal with the functionality of the application. It oversees the initiation of the application's backend processes.
 
@@ -809,9 +1113,17 @@ Figma \href{https://www.figma.com/file/i2Q2VBK5So9Fr4Y0fTfo8U/MCT-Design?type=de
 Link to \href{https://drive.google.com/file/d/1Ch1y_K63j26DbXrvBAeoG4raAhQos55k/view?usp=drive_link}{Component Diagram}
 
 \subsection{Reflection}
-The current limitations of the project stem from difficulties in verification and testing, particularly in connection with an operational ground system for scheduling on actual satellites. If we had unlimited resources, we would create our own fully operational ground server and test satellite architecture to ensure validity. However, the application's requirement is to be hosted on the MIST linux based server making communication challenging as functionalities like pinging are restricted. Having unlimited resources would allow us to establish our server capable of sending commands directly to the satellite. Another limitation of the project is the testing of command scheduling and satellite communication features. Currently, we lack a satellite for direct communication, so we must rely on a mock server for our tests. If unlimited resources were available, launching a test satellite to create a real-like environment for satellite communication testing would be the approach.
 
-Given the set of requirements imposed by external stakeholders, our design solutions were somewhat constrained. However, we actively managed complexity by decomposing our solution into distinct modules and implementing a high cohesion-low coupling approach to enhance the independence of these modules. This design approach aligned with good software engineering practices, particularly in terms of architectural considerations, as a component-based architecture was well-suited to our project requirements. Since the project description provided us with most of the functional and nonfunctional requirements, there was limited room for exploring alternative design ideas for our application. While we did contemplate design decisions related to the application's user interface, the core functionalities remained consistent. Our project's predefined requirements for both functionality and technology stack further limited the scope for exploring diverse implementation strategies at the outset of the project.
+1. What are the limitations of your solution? Put another way, given unlimited resources, what could you do to make the project better?
+\\
+\\
+The current limitations of the project stem from difficulties in verification and testing, particularly in connection with an operational ground system for scheduling on actual satellites. Additionally, if we had unlimited resources, we would create our own fully operational ground server and test satellite architecture to ensure validity. However, the application's requirement is to be hosted on the MIST linux based server making communication challenging as functionalities like pinging are restricted. Having unlimited resources would allow us to establish our server capable of sending commands directly to the satellite. Another limitation of the project is the testing of command scheduling and satellite communication features. Currently, we lack a satellite for direct communication, so we must rely on a mock server for our tests. If unlimited resources were available, launching a test satellite to create a real-like environment for satellite communication testing would be the approach. Given unlimited resources, we can also enhance the authentication process by implementing multi-factor authentication for an extra layer of safety and rate limiting to prevent brute-force attacks. Better visualization of satellite path and related information would also enhance the user experience. 
+\\
+\\
+2. Give a brief overview of other design solutions you considered. What are the other benefits and tradeoffs of those other designs compared with the chosen design? From all the potential options, why did you select the documented design?
+\\
+
+Given the set of requirements imposed by external stakeholders, our design solutions were somewhat constrained. However, we actively managed complexity by decomposing our solution into distinct modules and implementing a high cohesion-low coupling approach to enhance the independence of these modules. Specifically, we ensured high cohesion by organizing modules to perform closely related tasks, such as command scheduling, communication protocols, and data processing, which minimized dependencies and promoted clarity within each module. Low coupling was achieved by designing interfaces between modules to be minimal and abstract, allowing for easier maintenance, testing, and future modifications without impacting other parts of the system. This design approach aligned with good software engineering practices, particularly in terms of architectural considerations, as a component-based architecture was well-suited to our project requirements. Since the project description provided us with most of the functional and nonfunctional requirements, there was limited room for exploring alternative design ideas for our application. While we did contemplate design decisions related to the application's user interface, the core functionalities remained consistent. Other design decisions such as experimenting with different communication protocols or architectural patterns, had to be ruled out early on due to the need for compatibility with existing systems. Our project's predefined requirements for both functionality and technology stack further limited the scope for exploring diverse implementation strategies at the outset of the project.
 
 
 
