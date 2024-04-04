@@ -10,6 +10,7 @@
 \usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{amsmath} 
 \usepackage{multirow}
 \usepackage{graphicx}
 \hypersetup{
@@ -51,6 +52,7 @@ October 6, 2023 & Q.H, R.V, D.A, D.C, U.R & Completed SRS documentation\\
 October 9, 2023 & U.R & Added missing relevant facts and assumptions\\
 October 20, 2023 & U.R & Added safety and security requirements from Hazard Analysis\\
 November 3, 2023 & U.R & Added labels to FRs\\
+April 4, 2024 & D.C & Incorporated TA Feedback\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -72,7 +74,7 @@ The intended reader is already familiar with the goals and objectives of the pro
 
 \section{Purpose of the Project}
 \subsection{User Business}
-The primary objective of our project is to provide satellite operators with a platform to automatically schedule and send commands to satellites as they pass overhead. In addition, the system will keep logs of all commands sent, responses, with concurrent access available. 
+The primary objective of our project is to provide satellite operators with a platform to automatically schedule and send commands to satellites as they pass overhead. In addition, the system will keep logs of all commands sent, responses, display polar plots with concurrent access available. 
 \subsection{Goals of the Project}
 See \href{https://github.com/RishiVaya/Lower_Earth_Orbiters/blob/main/docs/ProblemStatementAndGoals/ProblemStatement.pdf}{ Problem Statement and Goals document}, section 2.
 \section{Stakeholders}
@@ -131,13 +133,23 @@ See \href{https://github.com/RishiVaya/Lower_Earth_Orbiters/blob/main/docs/Probl
     \end{itemize}
 \end{itemize}
 
+\subsection{Societal Impact}
+Our application is essential for society for several reasons. First, it directly supports the mission of the McMaster Interdisciplinary Satellite Team (MIST). This application can play a pivotal role for the success of MIST missions like NEUDOSE and PRESET by facilitating automatic scheduling and sending of commands to satellites as they orbit Earth. These missions are about understanding prolonged space radiation on human tissue and understanding the behaviour and impact it has on our atmosphere respectively. Our application can facilitate these missions thereby increasing the chance of these missions to being successful. The web-based interface makes the application accessible from various locations and devices, significantly improving accessibility and operational flexibility compared to traditional satellite control systems.
+
+One significant advantage of this product over existing solutions is the user-friendly interface. It combines ease of use with the ability to schedule commands, predict satellite overpasses, and manage user authentication and authorization with modern protocols like OpenID Connect. This enhances operational efficiency and ensures secure, reliable satellite communication. Moreover, the application’s ability to log all commands and responses with different users is crucial for maintaining accurate records. 
+
+It uses TLE data for accurate orbital predictions and incorporates UTF-8 character encoding for command exchanges, which enhances the system's robustness and fault tolerance. The web-based interface makes the application accessible from various locations and devices, significantly improving accessibility and flexibility compared to traditional satellite communication systems.
+
+
 \subsection{Hands-On Users of the Project}
+Operators have access to many functions that they previously didn't, and can act on these functions with the click of a button. They can perform the same actions as they did before, but with more efficiency and ease. 
+
 \begin{itemize}
     \item Satellite Engineers
     \begin{itemize}
-        \item Role: Engineers responsible for the operation of PRESET CubeSat
+        \item Role: Engineers responsible for the operation of PRESET CubeSat, their next mission about understanding the behaviour of electrons and their impact on our atmosphere. 
 
-        \item Interest: Satellite engineers may be involved in the testing and integration of the application with the satellite systems.
+        \item Interest: Satellite engineers may be involved in the testing and integration of the application with the satellite systems. This can help with understanding what aspects of the UI that maybe unclear or confusing.  
 
     \end{itemize}
     \item Command Operators
@@ -249,6 +261,7 @@ involved in the Project}
     \item The application will be compatible with commonly used web browsers, including Chrome, Firefox, and Edge.
 \end{itemize}
 
+
 \section{The Scope of the Product}
 \subsection{Product Boundary}
 \begin{figure}[H]
@@ -286,6 +299,44 @@ User Authentication and Authorization: Users must be able to log in, with a spec
 \hline
 \end{tabular}
 \end{table}
+\subsection{System Boundaries}
+.\includegraphics[width=15cm, height=10cm]{systemcontext.png}
+
+\subsection{Formalized Math and the Application Flow }
+  
+\textbf{1. Commands Sent to the Satellite Must Be Encrypted}
+
+\paragraph{Definitions:}
+Let $C$ be the set of all commands that can be sent to satellites, $S$ be the set of all satellites, and $E$ be the set of all encrypted commands.\\
+
+\textbf{Functions:}
+\begin{itemize}
+  \item Encryption: $f : C \rightarrow E$.
+  \item Send: $g : E \times S \rightarrow \text{``Sent''}$.
+\end{itemize}
+
+\textbf{2. Users Sending Data to the Application}
+
+\paragraph{Definitions:}
+Let $U$ be the set of all users, $D$ be the set of all data items that users can send, and $A$ represent the application.\\
+
+
+\textbf{Relation:}
+\begin{itemize}
+  \item Sending Relation: $R \subseteq (U \times D \times \{A\})$.
+\end{itemize}
+
+\textbf{3. Each Satellite Has Many Schedules}
+
+\paragraph{Definitions:}
+Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of all possible schedules.\\
+
+\textbf{Relation:}
+\begin{itemize}
+  \item Scheduling Relation: $H \subseteq S \times Sc$.
+\end{itemize}
+
+
 
 \section{Functional Requirements}
 \subsection{Functional Requirements}
@@ -318,7 +369,7 @@ User Authentication and Authorization: Users must be able to log in, with a spec
 
     \item{FR-6\\}
         
-    The MCT must have an option to cancel an automated command sequence during execution. \\
+    The MCT must have an option to interrupt an executed command sequence during execution. \\
     \textbf{Rationale:} This is to allow the user to undo if a command was sent as a mistake or incorrect on their part. This will save plenty of time for the user rather than having to wait till the original command has been processed. 
 
     \item{FR-7\\}
@@ -637,6 +688,8 @@ The application shall support multi-factor authentication such that a user must 
 \textbf{Rationale} Having multi-factor authentication provides an additional layer of security to the application, ensuring that unauthorized users are prohibited from accessing sensitive user and system data.
  \begin{itemize}
          \item \textbf{Phase in Plan}: This requirement will start phasing in after the system has completed every other core functionality, which will be a few days before February 5th, 2024.
+         \item\textbf{This Access Requirement will no longer be implemented.}
+
     \end{itemize}
 
 
@@ -707,7 +760,7 @@ All components which are required for scheduling operations shall be evaluated o
 \section{Compliance Requirements}
 \subsection{Legal Requirements}
 \begin{itemize}
-    \item N/A
+    \item For the scope of our project, all data and information that is used and being tracked is public information. Therefore, no legal or regulatory requirements exist for our application. 
 \end{itemize}
 
 \subsection{Standards Compliance Requirements}
@@ -722,7 +775,7 @@ N/A
 \section{Off-the-Shelf Solutions}
 \subsection{Ready-Made Products}
 \begin{itemize}
-    \item OpenID Connect offers an authentication protocol that can be used to implement a user-based authentication flow for the application.
+    \item Auth0 is compliant with the OpenID Connect authentication protocol that can be used to implement a user-based authentication flow for the application.
     \item SSH or TLS can be used as the cryptographic protocol to ensure security.
     \item ESLint is a linter that can be used to format and catch errors in the source code.
 \end{itemize}
@@ -749,7 +802,7 @@ N/A
 
 \subsection{Potential User Problems}
 \begin{itemize}
-    \item Accessibility to the command terminal requires authentication to be granted through the OpenID Connect Protocol. However, this is an industry-standard protocol for authentication and authorization, making it highly unlikely to encounter this problem.
+    \item Accessibility to the command terminal requires authentication to be granted through the OpenID Connect Protocol offered by Auth0. However, this is an industry-standard protocol for authentication and authorization, making it highly unlikely to encounter this problem.
 \end{itemize}
 
 \subsection{Limitations in the Anticipated Implementation Environment That May
@@ -786,7 +839,7 @@ Inhibit the New Product}
         \begin{itemize}
             \item For frontend: Look into Next.js and TypeScript
             \item For Backend: Look into node.js and MongoDB Integration
-            \item Authentication: Look into ConnectID protocol
+            \item Authentication: Look into Auth0 protocol
             \item Set up testing, development, and production environments
         \end{itemize}
 \end{itemize}
