@@ -47,6 +47,7 @@
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 Jan. 17, 2024 & 1.0 & Completed MG for MCT application\\
+April 3, 2024 & 1.1 & Updated documentation to reflect current implementation of the application and updated MG based on feedback\\
 \bottomrule
 \end{tabularx}
 
@@ -93,14 +94,14 @@ This section records information for easy reference.
 
 Decomposing a system into modules is a commonly accepted approach to developing
 software.  A module is a work assignment for a programming
-team~\citep{ParnasEtAl1984}.  We advocate a decomposition
-based on the principle of information hiding~\citep{Parnas1972a}.  This
+team.  We advocate a decomposition
+based on the principle of information hiding.  This
 principle supports design for change, because the ``secrets'' that each module
 hides represent likely future changes.  Design for change is valuable in SC,
 where modifications are frequent, especially during initial development as the
 solution space is explored.  
 
-Our design for the MCT application follows the rules layed out by \citet{ParnasEtAl1984}, as follows:
+Our design for the MCT application follows the rules layed out by the team, as follows:
 \begin{itemize}
 \item System details that are likely to change independently should be the
   secrets of separate modules.
@@ -110,7 +111,7 @@ Our design for the MCT application follows the rules layed out by \citet{ParnasE
 \end{itemize}
 
 After completing the first stage of the design, the Software Requirements
-Specification (SRS), the Module Guide (MG) is developed~\citep{ParnasEtAl1984}. The MG
+Specification (SRS), the Module Guide (MG) is developed by Lower Earth Orbiters. The MG
 specifies the modular structure of the system and is intended to allow both
 designers and maintainers to easily identify the parts of the software.  The
 potential readers of this document are as follows:
@@ -263,15 +264,14 @@ It's responsible for initializing the backend processes of the application.
  
 \section{Module Decomposition} \label{SecMD}
 
-Modules are decomposed according to the principle of ``information hiding''
-proposed by \citet{ParnasEtAl1984}. The \emph{Secrets} field in a module
+Modules are decomposed according to the principle of ``information hiding''. The \emph{Secrets} field in a module
 decomposition is a brief statement of the design decision hidden by the
 module. The \emph{Services} field specifies \emph{what} the module will do
 without documenting \emph{how} to do it. For each module, a suggestion for the
 implementing software is given under the \emph{Implemented By} title. If the
 entry is \emph{OS}, this means that the module is provided by the operating
-system or by standard programming language libraries.  \emph{\progname{}} means the
-module will be implemented by the \progname{} software.
+system or by standard programming language libraries.  \emph{MCT} means the
+module will be implemented by the MCT software.
 
 Only the leaf modules in the hierarchy have to be implemented. If a dash
 (\emph{--}) is shown, this means that the module is not a leaf and will not have
@@ -374,82 +374,83 @@ requirements and between the modules and the anticipated changes.
  
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+\begin{tabular}{|c|c|c|} \hline 
+% \begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
 \toprule
-\textbf{Req.} & \textbf{Modules}\\
+\textbf{Req.} & \textbf{Modules} & \textbf{Module Numbers}\\
 \midrule
 
-REQ-MCT-001 & BackendService  \\ 
+REQ-MCT-001 & BackendService & 6.1.8  \\ 
 
-REQ-MCT-002 & User \\ 
+REQ-MCT-002 & User & 7.2.3 \\ 
 
-REQ-MCT-003 & Authentication, User \\ 
+REQ-MCT-003 & Authentication, User & 7.2.4, 7.2.3 \\ 
 
-REQ-MCT-004 & Schedule \\ 
+REQ-MCT-004 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-005 & Schedule \\ 
+REQ-MCT-005 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-006 & Satellite \\ 
+REQ-MCT-006 & Satellite & 7.2.1 \\ 
 
-REQ-MCT-007 & Satellite, Schedule \\ 
+REQ-MCT-007 & Satellite, Schedule & 7.2.1, 7.2.2 \\ 
 
-REQ-MCT-008 & Satellite, Log \\ 
+REQ-MCT-008 & Satellite, Log & 7.2.1, 7.2.6 \\ 
 
-REQ-MCT-009 & Schedule \\ 
+REQ-MCT-009 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-010 & Schedule \\ 
+REQ-MCT-010 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-011 & Schedule \\ 
+REQ-MCT-011 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-012 & Schedule \\ 
+REQ-MCT-012 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-013 & Schedule \\ 
+REQ-MCT-013 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-014 & Schedule \\ 
+REQ-MCT-014 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-015 & User \\ 
+REQ-MCT-015 & User & 7.2.3 \\ 
 
-REQ-MCT-016 & User \\ 
+REQ-MCT-016 & User & 7.2.3 \\ 
 
-REQ-MCT-017 & User \\ 
+REQ-MCT-017 & User & 7.2.3 \\ 
 
-REQ-MCT-018 & User, Schedule \\ 
+REQ-MCT-018 & User, Schedule & 7.2.3 7.2.2 \\ 
 
-REQ-MCT-019 & Schedule \\ 
+REQ-MCT-019 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-020 & Schedule \\ 
+REQ-MCT-020 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-021 & Schedule \\ 
+REQ-MCT-021 & Schedule & 7.2.2 \\ 
 
-REQ-MCT-022 & Satellite \\ 
+REQ-MCT-022 & Satellite & 7.2.1 \\ 
 
-REQ-MCT-023 & Satellite \\ 
+REQ-MCT-023 & Satellite & 7.2.1 \\ 
 
-REQ-MCT-024 & Satellite \\ 
+REQ-MCT-024 & Satellite & 7.2.1 \\ 
 
-REQ-MCT-025 & Satellite \\ 
+REQ-MCT-025 & Satellite & 7.2.1 \\ 
 
-REQ-MCT-026 & Satellite \\ 
+REQ-MCT-026 & Satellite & 7.2.1 \\ 
 
-REQ-MCT-027 & Satellite, Schedule, SatelliteQueue \\ 
+REQ-MCT-027 & Satellite, Schedule, SatelliteQueue & 7.2.1, 7.2.2 \\ 
 
-REQ-MCT-028 & Satellite, Schedule, SatelliteQueue \\ 
+REQ-MCT-028 & Satellite, Schedule, SatelliteQueue & 7.2.1, 7.2.2 \\ 
 
-OPT-MCT-001 & Schedule \\ 
+OPT-MCT-001 & Schedule & 7.2.2 \\ 
 
-OPT-MCT-002 & Schedule \\ 
+OPT-MCT-002 & Schedule & 7.2.2 \\ 
 
-OPT-MCT-003 & Schedule \\ 
+OPT-MCT-003 & Schedule & 7.2.2 \\ 
 
-OPT-MCT-004 & Schedule \\ 
+OPT-MCT-004 & Schedule & 7.2.2 \\ 
 
-OPT-MCT-005 & Schedule \\ 
+OPT-MCT-005 & Schedule & 7.2.2 \\ 
 
-OPT-MCT-006 & Schedule \\ 
+OPT-MCT-006 & Schedule & 7.2.2 \\ 
 
-OPT-MCT-007 & Schedule \\ 
+OPT-MCT-007 & Schedule & 7.2.2 \\ 
 
-OPT-MCT-008 & BackendService \\
+OPT-MCT-008 & BackendService & 6.1.8 \\
 
 \bottomrule
 \end{tabular}
@@ -457,57 +458,32 @@ OPT-MCT-008 & BackendService \\
 \label{TblRT}
 \end{table}
 
-
- 
-% \begin{table}[H]
-% \centering
-% \begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
-% \toprule
-% \textbf{Req.} & \textbf{Modules}\\
-% \midrule
-% R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-% R2 & \mref{mInput}, \mref{mParams}\\
-% R3 & \mref{mVerify}\\
-% R4 & \mref{mOutput}, \mref{mControl}\\
-% R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-% R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-% R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-% R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-% R9 & \mref{mVerifyOut}\\
-% R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-% R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
-% \bottomrule
-% \end{tabular}
-% \caption{Trace Between Requirements and Modules}
-% \label{TblRT}
-% \end{table}
-
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+\begin{tabular}{|c|c|c|} \hline 
 \toprule
 Anticipated Change
-& Modules
+& Modules & Module Numbers
 \\
 \midrule
 
 AC1
-& Satellite
+& Satellite & 7.2.1
 \\
 AC2
-& Satellite
+& Satellite & 7.2.1
 \\
 AC3
-& Satellite
+& Satellite & 7.2.1
 \\
 AC4
-& Satellite
+& Satellite & 7.2.1
 \\
 AC5
-& Satellite
+& Satellite & 7.2.1
 \\
 AC6
-& Satellite, Schedule
+& Satellite, Schedule & 7.2.1, 7.2.2
 \\
 \bottomrule
 \end{tabular}
@@ -517,26 +493,15 @@ AC6
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
-In this section, the uses hierarchy between modules is
-provided. \citet{Parnas1978} said of two programs A and B that A {\em uses} B if
-correct execution of B may be necessary for A to complete the task described in
-its specification. That is, A {\em uses} B if there exist situations in which
-the correct functioning of A depends upon the availability of a correct
-implementation of B.  Figure \ref{FigUH} illustrates the use relation between
-the modules. It can be seen that the graph is a directed acyclic graph
-(DAG). Each level of the hierarchy offers a testable and usable subset of the
-system, and modules in the higher level of the hierarchy are essentially simpler
-because they use modules from the lower levels.
+The Log module is one of the basic modules in the hierarchy. Both Satellite Queue and Database modules use it for logging. The User module uses the Database module too for managing user-related data. The Backend Service is the orchestrator of the system, and some of the key components employed by the Backend Service to assume its roles include the User and Authentication modules and the Satellite Queue with the Schedule, all to manage the satellite data and operations. This implies a hierarchy situation where every higher-level module depends on the functioning of lower ones, thereby, allowing systematic testing of the system architecture without having circle dependencies.
 
 
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
 \begin{figure}
-    \centering
     \includegraphics[width=1\linewidth]{hierarchy_dag.png}
-    \caption{Enter Caption}
+    \caption{DAG diagram depicting the hierarchy between modules}
     \label{Use hierarchy among modules}
 \end{figure}
 \label{FigUH}
@@ -544,22 +509,29 @@ because they use modules from the lower levels.
 
 \section{Timeline}
 
-\begin{table}
+The deadlines in our project's timeline are planned to match the main goals we aim to achieve in each stage. We've split the work into parts, each with its own deadline, so we can work on different things at the same time and make sure everything comes together smoothly. For example, we're finishing the User module early because it's important for setting up who can do what in the system. Getting the Authentication module done early is also key because it makes sure that only the right people can access the system while we keep building it. The set deadlines help us keep track of our progress. This way, we can make sure we finish the whole project on time without rushing and making mistakes. In short, our timeline helps us stay organized and work efficiently so that we can complete our project successfully and on time.
+\\
+\begin{center}
+    \begin{table}
     \centering
-    \begin{tabular}{|c|c|c|} \hline 
-         \textbf{Module}&  \textbf{People Responsible}& \textbf{Deadline}\\ \hline 
-         Satellite&  Quinn& Jan 31, 2024\\ \hline 
-         Schedule&  Quinn, Umang, Rishi& Jan 31, 2024\\ \hline 
-         User&  Dhruv& Jan 25, 2024\\ \hline 
-         SatelliteQueue&  Umang, Rishi& Jan 31, 2024\\ \hline 
-         Log&  Quinn& Jan 20, 2024\\ \hline 
-         Authentication&  Diamond& Jan 25, 2024\\ \hline 
-         Database&  Umang, Rishi& Jan 31, 2024\\ \hline 
-         BackendService&  Diamond, Dhruv& Jan 31, 2024\\ \hline
+    \begin{tabular}{p{0.6\textwidth} p{0.2\textwidth} p{0.2\textwidth}}
+
+    % \begin{tabular}{|c|c|c|} \hline 
+         \textbf{Module and Description}&  \textbf{People Responsible}& \textbf{Deadline}\\ \hline 
+         Satellite (7.2.1) - Should implement future overpass, satellite information and record updating functionalities. Should add test cases for all the endpoints created&  Quinn& Jan 31, 2024\\ \hline 
+         Schedule (7.2.2) - should create the endpoints required for adding commands to schedules and testing them&  Quinn, Umang, Rishi& Jan 31, 2024\\ \hline 
+         User (7.2.3) - should create endpoints for creating, updating and permissions for users. Should add test cases for all the endpoints created&  Dhruv& Jan 25, 2024\\ \hline 
+         SatelliteQueue (6.1.4) - Should add the functionality to execute schedules in the satellite queue based on the overpass times.&  Umang, Rishi& Jan 31, 2024\\ \hline 
+         Log (7.2.6) - should create endpoint to receive logs for all commands and make the frontend page.&  Quinn& Jan 20, 2024\\ \hline 
+         Authentication (7.2.4) - should create functionality to authenticate a user using auth0&  Diamond& Jan 25, 2024\\ \hline 
+         Database (6.1.7) - should create all the schemas for users, satellites, commands, schedules and logs.&  Umang, Rishi& Jan 31, 2024\\ \hline 
+         % BackendService (6.1.8)&  Diamond, Dhruv& Jan 31, 2024\\ \hline
     \end{tabular}
     \caption{Table for the timeline of the module}
     \label{tab:my_label}
 \end{table}
+\end{center}
+
 %\section*{References}
 
 \end{document}
