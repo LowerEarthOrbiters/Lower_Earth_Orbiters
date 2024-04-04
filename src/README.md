@@ -1,4 +1,4 @@
-# Project Name Source Code
+# MCT (Mission Control Terminal) Source Code
 
 The folders and files for this project are as follows:
 
@@ -9,5 +9,3 @@ This is the frontend repository containing all the user facing logic
 ## leo-server-app
 
 This is the backend repository containing all of the server-side logic
-
-...

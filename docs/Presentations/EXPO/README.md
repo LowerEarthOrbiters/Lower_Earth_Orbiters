@@ -1,5 +1,3 @@
 # EXPO Poster
 
-The folders and files for this folder are as follows:
-
-- 
+This folder contains the EXPO poster for the project.
