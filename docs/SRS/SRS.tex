@@ -52,6 +52,7 @@ October 6, 2023 & Q.H, R.V, D.A, D.C, U.R & Completed SRS documentation\\
 October 9, 2023 & U.R & Added missing relevant facts and assumptions\\
 October 20, 2023 & U.R & Added safety and security requirements from Hazard Analysis\\
 November 3, 2023 & U.R & Added labels to FRs\\
+April 4, 2024 & D.C & Incorporated TA Feedback\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -774,7 +775,7 @@ N/A
 \section{Off-the-Shelf Solutions}
 \subsection{Ready-Made Products}
 \begin{itemize}
-    \item Auth0 offers an authentication protocol that can be used to implement a user-based authentication flow for the application.
+    \item Auth0 is compliant with the OpenID Connect authentication protocol that can be used to implement a user-based authentication flow for the application.
     \item SSH or TLS can be used as the cryptographic protocol to ensure security.
     \item ESLint is a linter that can be used to format and catch errors in the source code.
 \end{itemize}
@@ -801,7 +802,7 @@ N/A
 
 \subsection{Potential User Problems}
 \begin{itemize}
-    \item Accessibility to the command terminal requires authentication to be granted through the Auth0 Protocol. However, this is an industry-standard protocol for authentication and authorization, making it highly unlikely to encounter this problem.
+    \item Accessibility to the command terminal requires authentication to be granted through the OpenID Connect Protocol offered by Auth0. However, this is an industry-standard protocol for authentication and authorization, making it highly unlikely to encounter this problem.
 \end{itemize}
 
 \subsection{Limitations in the Anticipated Implementation Environment That May
