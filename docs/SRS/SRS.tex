@@ -162,13 +162,13 @@ Operators have access to many functions that they previously didn't, and can act
 
 \subsection{Personas}
 \begin{itemize}
-    \item Application Administrators
+    \item Application Administrators: This is someone who has the authority, background knowledge and understanding about satellite communication, sending commands and executing schedules. They have the authority in the MIST team to change another operator's permission when necessary. A good example of this would be the Principle Investigators or the Team Leads for different missions.  
     \begin{itemize}
         \item Responsible for user management where they can add, edit and define roles for operators
         \item Allowed to modify the permission list for each target and user.
     \end{itemize}
 
-    \item Operators
+    \item Operators: This is a person who does not have the same authority as the team leads or the Principal Investigator but plays an active role in the execution of a mission. They are very involved in the day to day and understand the nuances and how to communicate with satellites. They have experience in communicating and executing schedules and commands. 
     \begin{itemize}
         \item Users who are primarily scheduling commands to a target satellite. This includes creating, editing and deleting scheduled commands and sequences
     \end{itemize}
@@ -265,6 +265,7 @@ involved in the Project}
 \section{The Scope of the Product}
 \subsection{Product Boundary}
 \begin{figure}[H]
+This table displays what aspects of the application is in and out of scope. 
 \centering
 \caption{Scope and Out of Scope}
 \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
@@ -283,6 +284,8 @@ User Authentication and Authorization: Users must be able to log in, with a spec
 
 \begin{table}[H]
 \centering
+ The table details use cases for Operators and Admins in a system.
+
 \caption{User Use Cases}
 \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
 \hline
@@ -300,6 +303,8 @@ User Authentication and Authorization: Users must be able to log in, with a spec
 \end{tabular}
 \end{table}
 \subsection{System Boundaries}
+Visually describing the inputs, outputs of the application. 
+
 .\includegraphics[width=15cm, height=10cm]{systemcontext.png}
 
 \subsection{Formalized Math and the Application Flow }
@@ -339,12 +344,11 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 
 
 \section{Functional Requirements}
-\subsection{Functional Requirements}
 \begin{enumerate}
     \item{FR-1\\}
     
     The MCT must run as a web application consisting of a graphical UI accessible through a web browser and TCP port to communicate commands. \\
-    \textbf{Rationale:} We believe a web application is the most appropriate way to achieve communication between users and the satellite. We chose Linux because of its flexibility, reliability and overall security.
+    \textbf{Rationale:} We believe a web application is the most appropriate way to achieve communication between users and the satellite. 
     
     \item{FR-2\\}
     
@@ -374,17 +378,17 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 
     \item{FR-7\\}
     
-    The MCT shall store a list of allowed commands and automated sequences for each target, specified using regular expressions. \\
+    The MCT must store a list of allowed commands and automated sequences for each target, specified using regular expressions. \\
     \textbf{Rationale:} This will ensure the system can verify a command when inputted by a user so that it matches to an allowed list. Otherwise, any command might influence a target which can cause damage.
 
     \item{FR-8\\}
         
-    The MCT shall store a list of allowed commands and automated sequences for each user, specified using regular expressions. \\
+    The MCT must store a list of allowed commands and automated sequences for each user, specified using regular expressions. \\
     \textbf{Rationale:} This will ensure the system can verify the user so that it matches to an allowed list of users. Otherwise, any command by any user can negatively influence the satellite. 
 
     \item{FR-9\\}
     
-    The application administrator shall be able to edit the permission list for each target and user. \\
+    The application administrator will be able to edit the permission list for each target and user. \\
     \textbf{Rationale:} An admin user who is responsible enough has been given permission to edit the list of targets and users. Without this functionality, if a user or command is attempting to cause damage it cannot be reprimanded. The admin user can remove or delete them to avoid said damage. 
 
     \item{FR-10\\}
@@ -404,27 +408,27 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 
     \item{FR-13\\}
         
-    The MCT shall present a graphical user interface to create, edit, and delete scheduled commands and sequences. \\
+    The MCT will present a graphical user interface to create, edit, and delete scheduled commands and sequences. \\
     \textbf{Rationale:} A graphical user interface presents an intuitive interface for the user to interact with the satellite through create, edit and delete functions. A visual UI is most intuitive for every human to interpret and work with. 
 
     \item{FR-14\\}
 
-    The MCT shall present a graphical user interface to select and edit the satellites of interest. \\
+    The MCT will present a graphical user interface to select and edit the satellites of interest. \\
     \textbf{Rationale:} A graphical user interface presents an intuitive interface for the user to interact with the select and edit the satellites of interest. A graphical UI is most appropriate solution for this function.
 
     \item{FR-15\\}    
 
-    The MCT shall display the current orbital state for satellites of interest, elevation, and solar illumination. \\
+    The MCT will display the current orbital state for satellites of interest, elevation, and solar illumination. \\
     \textbf{Rationale:} This is very important because it displays what the user is working with. For each satellite of interest, its elevation, orbital state and its illumination are vital pieces of information for the user to know. Presenting these on the screen is appropriate. 
     
     \item{FR-16\\}
 
-    The MCT shall be able to schedule commands when a satellite enters a user-specified elevation threshold over the ground station coordinates. \\
+    The MCT must be able to schedule commands when a satellite enters a user-specified elevation threshold over the ground station coordinates. \\
     \textbf{Rationale:} This allows the user to manipulate any satellite within the threshold. This enables the user to play around with more satellites as their threshold is subject to preference. 
 
     \item{FR-17\\}
     
-    The MCT shall be able to schedule commands when a satellite enters or exits in the covered area. \\
+    The MCT must be able to schedule commands when a satellite enters or exits in the covered area. \\
     \textbf{Rationale:} This is a core function of the application. The application can only manipulate and schedule commands for satellites within this area. Beyond this area would be too difficult for the application to manage. 
 
 \end{enumerate}
@@ -468,18 +472,18 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Learning Requirements}
 \begin{itemize}
     \item 
-\textbf{Ease of admin:} The MCT application should be easy to administer in order to reduce the workload on system administrators and make it easier to keep the system running smoothly.
+\textbf{LR-1: Ease of admin:} The MCT application should be easy to administer in order to reduce the workload on system administrators and make it easier to keep the system running smoothly.
 \begin{itemize}
     \item \textbf{Rationale}: It is important to follow well-established administration best practices, such as using a centralized administration console, a simple and intuitive GUI, online support resources, and automation.
     \item \textbf{Phase in Plan}: This requirement will start phasing in at the time of designing the front-end and back-end of the application which starts after October 20, 2023.
 \end{itemize}
 \item 
-\textbf{Documentation: }The MCT project should contain documentation for its web interface and key components. This documentation should be clear, concise, and easy to understand.
+\textbf{LR-2: Documentation: }The MCT project should contain documentation for its web interface and key components. This documentation should be clear, concise, and easy to understand.
 \begin{itemize}
     \item \textbf{Phase in Plan}: This requirement started phasing in at since the start of the project which was September 18th, 2023.
 \end{itemize}
 \item 
-\textbf{Training: }An average user should take at most 10 minutes to understand how to use the MCT application.
+\textbf{LR-3: Training: }An average user should take at most 10 minutes to understand how to use the MCT application.
 \begin{itemize}
     \item \textbf{Rationale: }It is a good practice to make an application less complicated and easier to learn by using appropriate headings, layouts, themes etc.
     \item \textbf{Phase in Plan}: This requirement will start phasing in at when the application is ready for test deployment, which is February 5th, 2024.
@@ -498,7 +502,7 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Accessibility Requirements}
 
 \begin{itemize}
-    \item \textbf{Compatibility: }The MCT web interface should be compatible with major browsers, operating systems and device types to ensure that all users, regardless of their preferred technology, can access and use the application effectively.
+    \item \textbf{Compatibility: }The MCT web interface should be compatible with major browsers like Chrome, Firefox, operating systems and device types to ensure that all users, regardless of their preferred technology, can access and use the application effectively.
     \begin{itemize}
         \item \textbf{Rationale: }It is important to follow well-established web development best practices, such as using standard web technologies, avoiding browser-specific features, and testing the interface on a variety of devices and platforms.
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the time of front-end development which starts after October 20th, 2023.
@@ -511,11 +515,11 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Speed and Latency Requirements}
 
 \begin{itemize}
-    \item \textbf{Responsiveness: }The MCT web interface should be responsive to user interactions. This is the measure of the time it takes for the interface to respond to user interactions.
+    \item \textbf{PR-1: Responsiveness: }The MCT web interface should be responsive and adjust accordingly to user interactions. This is the measure of the time it takes for the interface to respond to user interactions.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in during the Verification and Validation phase, which is on November 3rd, 2023.
     \end{itemize}
-    \item \textbf{Concurrent users:} The MCT should allow multiple users to access the service simultaneously to ensure that the latest information is displayed when a user hits refresh.
+    \item \textbf{PR-2: Concurrent users:} The MCT should allow multiple users to access the service simultaneously to ensure that the latest information is displayed when a user hits refresh.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the deployment of the test application which is at February 5th, 2024.
     \end{itemize}
@@ -525,7 +529,7 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Safety-Critical Requirements}
 
 \begin{itemize}
-    \item \textbf{Availability: }The MCT web service should be available outside of scheduled maintenance and not be affected by the availability of any targets.
+    \item \textbf{SCR-1: Availability: }The MCT web service should be available outside of scheduled maintenance and not be affected by the availability of any targets.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at when the application gets updates, which will be after its first test deployment on February 5th, 2024.
     \end{itemize}
@@ -534,11 +538,11 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Precision or Accuracy Requirements}
 
 \begin{itemize}
-    \item \textbf{Time accuracy:} The MCT should ensure that the system date and time are accurate to the nanosecond as it is part of scientific research. The choice for the source will be presented in section 5.3 of the Verification and Validation Plan document.
+    \item \textbf{PR-1: Time accuracy:} The MCT should ensure that the system date and time are accurate to the nanosecond as it is part of scientific research. The choice for the source will be presented in section 5.3 of the Verification and Validation Plan document.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the time of Verification and Validation Plan on November 3rd, 2023.
     \end{itemize}
-    \item \textbf{Testing: }The MCT source code should have test suites to identify regressions and verify compliance with requirements. These test suites should support various features, including mocking, assertions, and parallel test execution.
+    \item \textbf{PR-2: Testing: }The MCT source code should have test suites to identify regressions and verify compliance with requirements. These test suites should support various features, including mocking, assertions, and parallel test execution.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the time of Verification and Validation Plan on November 3rd, 2023.
     \end{itemize}
@@ -548,7 +552,7 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Robustness or Fault-Tolerance Requirements}
 
 \begin{itemize}
-    \item \textbf{Exceptions: }The MCT application should handle internal exceptions to ensure that the errors are catched when they occur during runtime.
+    \item \textbf{FTR-1: Exceptions: }The MCT application should handle internal exceptions to ensure that the errors are catched when they occur during runtime.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the time of Verification and Validation Plan on November 3rd, 2023.
     \end{itemize}
@@ -558,7 +562,7 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Capacity Requirements}
 
 \begin{itemize}
-    \item \textbf{Resource usage:} The MCT will minimize CPU, RAM, and disk space to be efficient.
+    \item \textbf{CR-1: Resource usage:} The MCT will minimize CPU, RAM, and disk space to be efficient.
     \begin{itemize}
         \item \textbf{Rationale: }It is a good practice to use efficient algorithms and data structures, requiring the system to use fewer resources.
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the time of starting code which is after October 20th, 2023.
@@ -573,7 +577,7 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Longevity Requirements}
 
 \begin{itemize}
-    \item \textbf{Service lifetime:} The MCT service should be operational until 2026, subject to extensions and improvements.
+    \item \textbf{LR-1: Service lifetime:} The MCT service should be operational until 2026, subject to extensions and improvements.
     \begin{itemize}
         \item \textbf{Rationale: }The client has outlined this specification.
         \item \textbf{Phase in Plan}: This requirement will start phasing in at 2026 when the application will no longer be maintained.
@@ -590,12 +594,12 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Wider Environment Requirements}
 
 \begin{itemize}
-    \item \textbf{Staging environment:} A staging environment should be available to verify functionality before deploying to the production environment.
+    \item \textbf{ER-1: Staging environment:} A staging environment should be available to verify functionality before deploying to the production environment.
     \begin{itemize}
         \item \textbf{Rationale: }It is important to verify that the application is functioning before deploying to the production environment as it can catch any errors that might occur at production stage.
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the first demonstration of the product, which is on February 5th, 2024.
     \end{itemize}
-    \item \textbf{Development environment:} A local development environment for the MCT should be self-contained, meaning that the developer does not need to install any additional software or tools on their local machine to develop and test the application.
+    \item \textbf{ER-2: Development environment:} A local development environment for the MCT should be self-contained, meaning that the developer does not need to install any additional software or tools on their local machine to develop and test the application.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at during the Verification and Validation Plan, on November 3rd, 2023.
     \end{itemize}
@@ -626,29 +630,29 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Maintenance Requirements}
 
 \begin{itemize}
-    \item \textbf{Databases: }The MCT should use well-established database technologies to store application data and avoid text or plain files.
+    \item \textbf{MR-1: Databases: }The MCT should use well-established database technologies to store application data and avoid text or plain files.
     \begin{itemize}
         \item \textbf{Rationale: }A well-established database is reliable and efficient. It is also essential to ensure data integrity, performance and scalability.
         \item \textbf{Phase in Plan}: This requirement started phasing in at the time of deciding the tools for the project, which was on September 25th, 2023.
     \end{itemize}
-    \item \textbf{CI/CD process} The MCT should use a CI/CD process for software deployment and incorporate automated testing and static analysis. This is necessary to improve the speed and reliability of software deployments, to reduce the risk of human error, and to ensure the quality of the software.
+    \item \textbf{MR-2: CI/CD process} The MCT should use a CI/CD process for software deployment and incorporate automated testing and static analysis. This is necessary to improve the speed and reliability of software deployments, to reduce the risk of human error, and to ensure the quality of the software.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at during the Verification and Validation Plan, on November 3rd, 2023.
     \end{itemize}
-    \item \textbf{System updates} The MCT should be able to update its libraries and dependencies to improve security, performance, or functionality.
+    \item \textbf{MR-3: System updates} The MCT should be able to update its libraries and dependencies to improve security, performance, or functionality.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at during the Verification and Validation Plan, on November 3rd, 2023.
     \end{itemize}
-    \item \textbf{Code quality:} The MCT source code should be well-organized, modular, and follow fundamental principles for software engineering. The standards will be defined in section 5.3 of the Verification and Validation Plan document.
+    \item \textbf{MR-4: Code quality:} The MCT source code should be well-organized, modular, and follow fundamental principles for software engineering. The standards will be defined in section 5.3 of the Verification and Validation Plan document.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the start of the code for the project, after October 20th, 2023.
     \end{itemize}
-    \item \textbf{Code formatting:} The MCT source code should use a code formatting tool to ensure that the code is consistent and easy to read.
+    \item \textbf{MR-5: Code formatting:} The MCT source code should use a code formatting tool to ensure that the code is consistent and easy to read.
     \begin{itemize}
         \item \textbf{Rationale: }Since a project can have many contributors, it is important to be consistent with the style of code.
         \item \textbf{Phase in Plan}: This requirement will start phasing in at the start of the code for the project, after October 20th, 2023.
     \end{itemize}
-    \item \textbf{Static analysis:} The MCT source code should use a linter or other static code analysis tools to catch errors and faults before runtime.
+    \item \textbf{MR-6: Static analysis:} The MCT source code should use a linter or other static code analysis tools to catch errors and faults before runtime.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at during the Verification and Validation Plan, on November 3rd, 2023.
     \end{itemize}
@@ -658,16 +662,16 @@ Let $S$ be the set of all satellites (as defined earlier) and $Sc$ be the set of
 \subsection{Supportability Requirements}
 
 \begin{itemize}
-    \item \textbf{Containerization: }The MCT should be a containerized application in order to be portable, scalable, and efficient.
+    \item \textbf{SR-1: Containerization: }The MCT should be a containerized application in order to be portable, scalable, and efficient.
     \begin{itemize}
         \item \textbf{Rationale: }It is easier for a user to run tests on a containerized application as it does not require them to install any additional resources.
         \item \textbf{Phase in Plan}: This requirement will start phasing in at during the Verification and Validation Plan, on November 3rd, 2023.
     \end{itemize}
-    \item \textbf{Backups: }The MCT should allow an administrator to back up its data to protect it from loss or corruption.
+    \item \textbf{SR-2: Backups: }The MCT should allow an administrator to back up its data to protect it from loss or corruption.
     \begin{itemize}
         \item \textbf{Phase in Plan}: This requirement will start phasing in at during the Verification and Validation Plan, on November 3rd, 2023.
     \end{itemize}
-    \item \textbf{Application Logs:} The MCT application should store logs to facilitate debugging.
+    \item \textbf{SR-3: Application Logs:} The MCT application should store logs to facilitate debugging.
     \begin{itemize}
         \item \textbf{Rationale: }It is important to keep track of the logs in order to debug the application. This will also help in finding the methods/functions where an error occurs.
         \item \textbf{Phase in Plan}: This requirement will start phasing in after the Verification and Validation Plan, on November 3rd, 2023.
@@ -906,7 +910,7 @@ At this point, no data will require modification or translation
 Provided below is a list of potential costs for the application. More details will be added as the project progresses
 \begin{itemize}
     \item Server Cost - Since the application is a website, it will require a host to serve the application.
-    \item Storage Cost - Having an extensive log of data collected and stored multiple times a day requires a large amount of storage space.
+    \item Storage Cost - Having an extensive log of data collected and stored multiple times a day might be demanding from a storage space perspective. 
 
     \item Authentication Costs - Robust authentication might require use of external applications.
     \item Testing Cost - Testing the application will involve several steps which will include moving heavy machinery (Transmitters, receivers and the ground satellite).
